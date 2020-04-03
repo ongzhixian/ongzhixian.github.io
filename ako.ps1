@@ -59,6 +59,7 @@ Function GetMimeType
         ".htm"  { [System.Net.Mime.MediaTypeNames+Text]::Html; Break}
         ".js"   { "text/javascript"; Break}
         ".rtf"  { [System.Net.Mime.MediaTypeNames+Text]::RichText; Break}
+        ".str"  { [System.Net.Mime.MediaTypeNames+Text]::Html; Break}
         ".txt"  { [System.Net.Mime.MediaTypeNames+Text]::Plain; Break}
         ".xhtml" { "application/xhtml+xml"; Break}
         ".xml"  { [System.Net.Mime.MediaTypeNames+Text]::Xml; Break}
@@ -129,10 +130,15 @@ try {
 
             $mimeType = GetMimeType($ext)
 
-            $data = Get-Content $localPath -AsByteStream -ReadCount 0
-
+            if ($ext -eq ".str")
+            {
+                $data = Get-Content $localPath -Encoding UTF8 -ReadCount 0
+            }
+            else 
+            {
+                $data = Get-Content $localPath -AsByteStream -ReadCount 0    
+            }
             
-
             #$data = [System.Text.Encoding]::UTF8.GetBytes("File found.")
             Send $ctx.Response $data -contentType $mimeType
             Write-Host "Requesting: $($req.Url.AbsolutePath) ==> $localPath (200 $mimeType)"
