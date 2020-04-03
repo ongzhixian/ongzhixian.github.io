@@ -8,6 +8,8 @@ $server = New-Object -TypeName System.Version -ArgumentList "1.2.3.4"
 
 [System.Console] | Get-Member -Static
 
+[System.Net.Mime.MediaTypeNames+Text]::Html
+
 
 Reference:
 

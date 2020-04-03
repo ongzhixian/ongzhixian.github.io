@@ -27,7 +27,7 @@ Write-Debug "`$scriptsPath  is $scriptsPath"
 
 # Determine if scriptsPath is already set
 $isSet = $env:Path -like "*$scriptsPath*"
-Write-Debug "`$isSet        is $isSet" 
+Write-Debug "`$isSet        is $isSet"
 
 # If is set already, exit
 if ($isSet) {
