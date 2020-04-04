@@ -101,7 +101,7 @@ Write-Debug "`$prefix        is $prefix"
 try {
     
     $server.Start()
-    Write-Host "Server started."
+    Write-Host "Server started.`nAccess server at: $prefix"
 
     $runServer = $true
     while ($runServer)
@@ -132,11 +132,13 @@ try {
 
             if ($ext -eq ".str")
             {
-                $data = Get-Content $localPath -Encoding UTF8 -ReadCount 0
+                $tmpl = Get-Content $localPath -Encoding UTF8 -ReadCount 0
+                $text = $ExecutionContext.InvokeCommand.ExpandString($tmpl)
+                $data = [System.Text.Encoding]::UTF8.GetBytes($text)
             }
             else 
             {
-                $data = Get-Content $localPath -AsByteStream -ReadCount 0    
+                $data = Get-Content $localPath -AsByteStream -ReadCount 0
             }
             
             #$data = [System.Text.Encoding]::UTF8.GetBytes("File found.")
