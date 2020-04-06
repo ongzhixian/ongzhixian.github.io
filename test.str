@@ -1,3 +1,0 @@
-Test string $([DateTime]::Now) <br />
-Multiple line <br />
-Another line $([DateTime]::Now.ToString("yyyy-MM-dd")) <br />

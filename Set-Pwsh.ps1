@@ -7,7 +7,7 @@
 #>
 
 param (
-    [switch]$Debug = $false
+    #[switch]$Debug = $false # No need to define this; Debug is part of the what is known as common parameters; See About CommonParameters
 )
 
 if ($Debug) {
