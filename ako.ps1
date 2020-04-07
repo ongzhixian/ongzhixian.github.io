@@ -89,15 +89,29 @@ if ((-not $inputIsFile) -and (-not $outputIsFile))  # File    Dir     OK
     Write-Debug '# Dir     Dir     OK'
     $fileList = Get-ChildItem -Path $resolvedPath -Recurse | Where-Object { $_ -is [System.IO.FileInfo] } | Foreach-Object { $_.FullName }
     #$fileList = Get-ChildItem -Path $resolvedPath -Recurse
-    $resolvedPath
-    
-    (Resolve-Path $outputDirectoryName).Path
-    $fileList
+    # ""
+    # Write-Debug $resolvedPath
+    # (Resolve-Path $outputDirectoryName).Path
+    # $fileList
+    # ""
+
     $fileList | ForEach-Object {
-        "$((Resolve-Path $outputDirectoryName).Path)$($_.Remove(0, $($resolvedPath.Length + 1)))"
+        #"$((Resolve-Path $outputDirectoryName).Path)$($_.Remove(0, $($resolvedPath.Length)))"
+
+        $tempResolvedOutputPath = Join-Path ((Resolve-Path $outputDirectoryName).Path) ([System.IO.Path]::GetFileName($_))
+
+        Write-Debug "src [$_] => dst [$tempResolvedOutputPath] "
+        # $tempResolvedOutputPath
+        # $_
+        
+        $tmpl = Get-Content $_ -Encoding UTF8 -ReadCount 0 -Raw
+        $text = $ExecutionContext.InvokeCommand.ExpandString($tmpl)
+        $text | Out-File $tempResolvedOutputPath
         
         
     }
+
+    $resolvedOutputPath = "*"
 }
 
 
