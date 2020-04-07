@@ -55,7 +55,7 @@ Another line $([DateTime]::Now.ToString("yyyy-MM-dd")) <br />
         <p>This index.html page is a placeholder with the CSS, font and favicon. It's just waiting for you to add some content! If you need some help hit up the <a href="http://www.getskeleton.com">Skeleton documentation</a>.</p>
 
         <p>
-Test string 04/07/2020 10:04:13 <br />
+Test string 04/07/2020 23:17:33 <br />
 Multiple line <br />
 Another line 2020-04-07 <br />
         </p>

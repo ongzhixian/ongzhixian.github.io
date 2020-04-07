@@ -98,9 +98,20 @@ if ((-not $inputIsFile) -and (-not $outputIsFile))  # File    Dir     OK
     $fileList | ForEach-Object {
         #"$((Resolve-Path $outputDirectoryName).Path)$($_.Remove(0, $($resolvedPath.Length)))"
 
-        $tempResolvedOutputPath = Join-Path ((Resolve-Path $outputDirectoryName).Path) ([System.IO.Path]::GetFileName($_))
+        "TGT $_ vs $resolvedPath"
+        $_.Remove(0, $resolvedPath.Length)
+        
+        $tempResolvedOutputPath = Join-Path ((Resolve-Path $outputDirectoryName).Path) ($_.Remove(0, $resolvedPath.Length))
+        #([System.IO.Path]::GetFileName($_))
 
         Write-Debug "src [$_] => dst [$tempResolvedOutputPath] "
+
+        $tempDirectoryName = [System.IO.Path]::GetDirectoryName($tempResolvedOutputPath)
+        "`$tempDirectoryName is $tempDirectoryName"
+        if (-not (Test-Path $tempDirectoryName))
+        {
+            New-Item -Path $tempDirectoryName -ItemType Directory
+        }
         # $tempResolvedOutputPath
         # $_
         
