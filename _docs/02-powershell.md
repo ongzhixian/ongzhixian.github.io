@@ -21,6 +21,7 @@ Shorten prompt
 
     Function prompt {"`e[32m$env:USERDOMAIN>$env:USERNAME`e[39m $PWD `e[36m($(git branch --show-current))`e[39m`nPS> "}
 
+    IF
     PS C:\src\github.com\ongzhixian\ongzhixian.github.io>
 
     `e[32;1m vs `e[32m 
