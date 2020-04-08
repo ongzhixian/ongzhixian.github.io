@@ -64,11 +64,11 @@ if ($inputIsFile)
     if ($outputIsFile)                # File    File    OK
     {
         Write-Debug '# File    File    OK'
-        $resolvedOutputPath = (Resolve-Path  $OutputPath).Path 
+        $resolvedOutputPath = $OutputPath 
         # Join-Path (Resolve-Path $outputDirectoryName).Path $outputFileName
         # $outputFileName
         # $outputDirectoryName
-        $resolvedOutputPath
+        #$resolvedOutputPath
     }
 
     if (-not $outputIsFile)         # File    Dir     OK
@@ -96,9 +96,16 @@ if ($inputIsFile)
     $extension = [System.IO.Path]::GetExtension($resolvedPath)
     if ($extension -eq ".phtm")
     {
-        $extension = [System.IO.Path]::GetExtension($resolvedPath)
-        $extensionIndex = $resolvedPath.LastIndexOf($extension)
-        $outputFilePath = "$($resolvedPath.Substring(0, $extensionIndex)).html"
+        if ($OutputPath.Length -le 0)
+        {    
+            $extension = [System.IO.Path]::GetExtension($resolvedPath)
+            $extensionIndex = $resolvedPath.LastIndexOf($extension)
+            $outputFilePath = "$($resolvedPath.Substring(0, $extensionIndex)).html"
+        }
+        else
+        {
+            $outputFilePath = $resolvedOutputPath
+        }
 
         $tmpl = Get-Content $resolvedPath -Encoding UTF8 -ReadCount 0 -Raw
         $text = $ExecutionContext.InvokeCommand.ExpandString($tmpl)

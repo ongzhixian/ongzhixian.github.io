@@ -47,6 +47,13 @@ Another line $([DateTime]::Now.ToString("yyyy-MM-dd")) <br />
         </p>
 
 
+<p>
+
+$($ExecutionContext.InvokeCommand.ExpandString($(Get-Content "./includes/header.phtm" -Encoding UTF8 -ReadCount 0 -Raw)))
+
+</p>
+
+
       </div>
     </div>
   </div>
