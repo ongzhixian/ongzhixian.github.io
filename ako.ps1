@@ -65,10 +65,6 @@ if ($inputIsFile)
     {
         Write-Debug '# File    File    OK'
         $resolvedOutputPath = $OutputPath 
-        # Join-Path (Resolve-Path $outputDirectoryName).Path $outputFileName
-        # $outputFileName
-        # $outputDirectoryName
-        #$resolvedOutputPath
     }
 
     if (-not $outputIsFile)         # File    Dir     OK
@@ -78,13 +74,9 @@ if ($inputIsFile)
         $resolvedOutputPath = Join-Path (Resolve-Path $outputDirectoryName).Path $inputFileName
     }
 
-    # $extension = [System.IO.Path]::GetExtension($resolvedPath)
-    # $extensionIndex = $resolvedPath.LastIndexOf($extension)
-    # $outputFilePath = "$($resolvedPath.Substring(0, $extensionIndex)).html"
     Write-Debug "`$OutputPath    [$OutputPath]"
     Write-Debug "Output         [$(if ($outputIsFile) {"File"} Else {"Directory"})]"
     Write-Debug "Out-Path       [$resolvedOutputPath]"
-
 
     $tempDirectoryName = [System.IO.Path]::GetDirectoryName($resolvedOutputPath)
     if (-not (Test-Path $tempDirectoryName))
@@ -142,18 +134,12 @@ else
         $fileList = Get-ChildItem -Path $resolvedPath -Recurse | Where-Object { $_ -is [System.IO.FileInfo] } | Foreach-Object { $_.FullName }
 
         $fileList | ForEach-Object {
-            #"$((Resolve-Path $outputDirectoryName).Path)$($_.Remove(0, $($resolvedPath.Length)))"
 
-            # "TGT $_ vs $resolvedPath"
-            # $_.Remove(0, $resolvedPath.Length)
-            
             $tempResolvedOutputPath = Join-Path ((Resolve-Path $outputDirectoryName).Path) ($_.Remove(0, $resolvedPath.Length))
-            #([System.IO.Path]::GetFileName($_))
 
             Write-Debug "src [$_] => dst [$tempResolvedOutputPath] "
 
             $tempDirectoryName = [System.IO.Path]::GetDirectoryName($tempResolvedOutputPath)
-            # "`$tempDirectoryName is $tempDirectoryName"
             if (-not (Test-Path $tempDirectoryName))
             {
                 $null = New-Item -Path $tempDirectoryName -ItemType Directory
