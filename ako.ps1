@@ -10,12 +10,6 @@ if ($Debug) {
     $DebugPreference = 'Continue'           # Start - display debug messages
 }
 
-
-function ParseAndGenerate()
-{
-
-}
-
 # Set Window title
 # (Get-Host).UI.RawUI.WindowTitle = "PS"
 
@@ -28,111 +22,168 @@ if (-not (Test-Path $Path))
 # Resolve path for $Path
 $resolvedPath = (Resolve-Path $Path).Path
 $inputIsFile = (Get-Item $resolvedPath) -is [System.IO.FileInfo]
-Write-Debug "`$Path is       [$Path]"
-Write-Debug "Input is       [$(if ($inputIsFile) {"File"} Else {"Directory"})]"
-Write-Debug "Resolved to    [$resolvedPath] "
-
 
 $outputFileName = [System.IO.Path]::GetFileName($OutputPath)
 $outputIsFile = -not [System.String]::IsNullOrWhiteSpace($outputFileName)
 
+Write-Debug "`$Path          [$Path]"
+Write-Debug "Input          [$(if ($inputIsFile) {"File"} Else {"Directory"})]"
+Write-Debug "In-Path        [$resolvedPath] "
+
 if ($outputIsFile)
 {
     $outputDirectoryName = [System.IO.Path]::GetDirectoryName($OutputPath)
+    $outputFileName = [System.IO.Path]::GetFileName($resolvedPath)
 }
 else {
-    $outputDirectoryName = $OutputPath
+    if ($OutputPath.Length -le 0)
+    {
+        $outputDirectoryName = [System.IO.Path]::GetDirectoryName($resolvedPath)
+        Write-Debug "A - $outputDirectoryName"
+    }
+    else
+    {
+        $outputDirectoryName = [System.IO.Path]::GetDirectoryName($OutputPath)    
+        Write-Debug "B - $outputDirectoryName"
+    }
+
+    $outputFileName = [System.IO.Path]::GetFileName($resolvedPath)
+
 }
-
-
 
 # Create folder if it does not already exists
 if (-not (Test-Path $outputDirectoryName))
 {
-    New-Item -Path $outputDirectoryName -ItemType Directory
-    $resolvedDirectory = (Resolve-Path $outputDirectoryName).Path
-
+    $null = New-Item -Path $outputDirectoryName -ItemType Directory
 }
 
-#$resolvedOutputPath = Join-Path (Resolve-Path $outputDirectoryName).Path $outputFileName
 
-
-
-""
-
-if ($inputIsFile -and $outputIsFile)                # File    File    OK
+# Handle files
+if ($inputIsFile)
 {
-    Write-Debug '# File    File    OK'
-    $resolvedOutputPath = Join-Path (Resolve-Path $outputDirectoryName).Path $outputFileName
-
-    # $tmpl = Get-Content $resolvedPath -Encoding UTF8 -ReadCount 0 -Raw
-    # $text = $ExecutionContext.InvokeCommand.ExpandString($tmpl)
-    # $text | Out-File $resolvedOutputPath
-}
-
-if ($inputIsFile -and (-not $outputIsFile))         # File    Dir     OK
-{
-    Write-Debug '# File    Dir     OK'
-    $inputFileName = [System.IO.Path]::GetFileName($Path)
-    $resolvedOutputPath = Join-Path (Resolve-Path $outputDirectoryName).Path $inputFileName
-}
-
-if ((-not $inputIsFile) -and $outputIsFile)         # Dir    File     Err
-{
-    Write-Debug '# Dir     File    Err'
-    Write-Error "Cannot resolve Directory input to file output."
-    exit
-}
-
-if ((-not $inputIsFile) -and (-not $outputIsFile))  # File    Dir     OK
-{
-    Write-Debug '# Dir     Dir     OK'
-    $fileList = Get-ChildItem -Path $resolvedPath -Recurse | Where-Object { $_ -is [System.IO.FileInfo] } | Foreach-Object { $_.FullName }
-    #$fileList = Get-ChildItem -Path $resolvedPath -Recurse
-    # ""
-    # Write-Debug $resolvedPath
-    # (Resolve-Path $outputDirectoryName).Path
-    # $fileList
-    # ""
-
-    $fileList | ForEach-Object {
-        #"$((Resolve-Path $outputDirectoryName).Path)$($_.Remove(0, $($resolvedPath.Length)))"
-
-        "TGT $_ vs $resolvedPath"
-        $_.Remove(0, $resolvedPath.Length)
-        
-        $tempResolvedOutputPath = Join-Path ((Resolve-Path $outputDirectoryName).Path) ($_.Remove(0, $resolvedPath.Length))
-        #([System.IO.Path]::GetFileName($_))
-
-        Write-Debug "src [$_] => dst [$tempResolvedOutputPath] "
-
-        $tempDirectoryName = [System.IO.Path]::GetDirectoryName($tempResolvedOutputPath)
-        "`$tempDirectoryName is $tempDirectoryName"
-        if (-not (Test-Path $tempDirectoryName))
-        {
-            New-Item -Path $tempDirectoryName -ItemType Directory
-        }
-        # $tempResolvedOutputPath
-        # $_
-        
-        $tmpl = Get-Content $_ -Encoding UTF8 -ReadCount 0 -Raw
-        $text = $ExecutionContext.InvokeCommand.ExpandString($tmpl)
-        $text | Out-File $tempResolvedOutputPath
-        
-        
+    if ($outputIsFile)                # File    File    OK
+    {
+        Write-Debug '# File    File    OK'
+        $resolvedOutputPath = (Resolve-Path  $OutputPath).Path 
+        # Join-Path (Resolve-Path $outputDirectoryName).Path $outputFileName
+        # $outputFileName
+        # $outputDirectoryName
+        $resolvedOutputPath
     }
 
-    $resolvedOutputPath = "*"
+    if (-not $outputIsFile)         # File    Dir     OK
+    {
+        Write-Debug '# File    Dir     OK'
+        $inputFileName = [System.IO.Path]::GetFileName($Path)
+        $resolvedOutputPath = Join-Path (Resolve-Path $outputDirectoryName).Path $inputFileName
+    }
+
+    # $extension = [System.IO.Path]::GetExtension($resolvedPath)
+    # $extensionIndex = $resolvedPath.LastIndexOf($extension)
+    # $outputFilePath = "$($resolvedPath.Substring(0, $extensionIndex)).html"
+    Write-Debug "`$OutputPath    [$OutputPath]"
+    Write-Debug "Output         [$(if ($outputIsFile) {"File"} Else {"Directory"})]"
+    Write-Debug "Out-Path       [$resolvedOutputPath]"
+
+
+    $tempDirectoryName = [System.IO.Path]::GetDirectoryName($resolvedOutputPath)
+    if (-not (Test-Path $tempDirectoryName))
+    {
+        $null = New-Item -Path $tempDirectoryName -ItemType Directory
+    }
+
+    # Only process ".phtm" files 
+    $extension = [System.IO.Path]::GetExtension($resolvedPath)
+    if ($extension -eq ".phtm")
+    {
+        $extension = [System.IO.Path]::GetExtension($resolvedPath)
+        $extensionIndex = $resolvedPath.LastIndexOf($extension)
+        $outputFilePath = "$($resolvedPath.Substring(0, $extensionIndex)).html"
+
+        $tmpl = Get-Content $resolvedPath -Encoding UTF8 -ReadCount 0 -Raw
+        $text = $ExecutionContext.InvokeCommand.ExpandString($tmpl)
+        $text | Out-File $outputFilePath
+    }
+    else 
+    {
+        # Just copy file
+        if ((Join-Path $resolvedPath "") -ne (Join-Path $resolvedOutputPath ""))
+        {
+            Copy-Item $resolvedPath -Destination $resolvedOutputPath
+        }
+        else
+        {
+            Write-Debug "Skip same src/dst;"
+        }
+        
+    }
+    Write-Debug "Output filepath [$outputFilePath]"
+
+}
+else 
+{
+    if ($outputIsFile)         # Dir    File     Err
+    {
+        Write-Debug '# Dir     File    Err'
+        Write-Error "Cannot resolve Directory input to file output."
+        exit
+    }
+
+    if (-not $outputIsFile)  # File    Dir     OK
+    {
+        Write-Debug '# Dir     Dir     OK'
+        $fileList = Get-ChildItem -Path $resolvedPath -Recurse | Where-Object { $_ -is [System.IO.FileInfo] } | Foreach-Object { $_.FullName }
+
+        $fileList | ForEach-Object {
+            #"$((Resolve-Path $outputDirectoryName).Path)$($_.Remove(0, $($resolvedPath.Length)))"
+
+            # "TGT $_ vs $resolvedPath"
+            # $_.Remove(0, $resolvedPath.Length)
+            
+            $tempResolvedOutputPath = Join-Path ((Resolve-Path $outputDirectoryName).Path) ($_.Remove(0, $resolvedPath.Length))
+            #([System.IO.Path]::GetFileName($_))
+
+            Write-Debug "src [$_] => dst [$tempResolvedOutputPath] "
+
+            $tempDirectoryName = [System.IO.Path]::GetDirectoryName($tempResolvedOutputPath)
+            # "`$tempDirectoryName is $tempDirectoryName"
+            if (-not (Test-Path $tempDirectoryName))
+            {
+                $null = New-Item -Path $tempDirectoryName -ItemType Directory
+            }
+
+            # Only process ".phtm" files 
+            $extension = [System.IO.Path]::GetExtension($_).ToLower()
+            if ($extension -eq ".phtm")
+            {
+                $extension = [System.IO.Path]::GetExtension($tempResolvedOutputPath)
+                $extensionIndex = $tempResolvedOutputPath.LastIndexOf($extension)
+                $tempResolvedOutputPath = "$($tempResolvedOutputPath.Substring(0, $extensionIndex)).html"
+
+                $tmpl = Get-Content $_ -Encoding UTF8 -ReadCount 0 -Raw
+                $text = $ExecutionContext.InvokeCommand.ExpandString($tmpl)
+                $text | Out-File $tempResolvedOutputPath
+            }
+            else 
+            {
+                # Just copy file
+                Copy-Item $_ -Destination $tempResolvedOutputPath
+            }
+            
+        }
+
+        $resolvedOutputPath = "*"
+    }
 }
 
 
-Write-Debug "`$OutputPath is [$OutputPath]"
-Write-Debug "Output is      [$(if ($outputIsFile) {"File"} Else {"Directory"})]"
-Write-Debug "Resolved to    [$resolvedOutputPath]"
 
-# $outputDirectoryName
-# $outputFileName
-# $outputIsFile
+
+
+
+
+
+Write-Output "All done."
 
 exit
 # $resolvedOutputPath = (Resolve-Path $OutputPath).Path
