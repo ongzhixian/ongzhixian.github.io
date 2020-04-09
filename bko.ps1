@@ -1,14 +1,25 @@
 
-$a = "./dum"
-$b = "./dum.html"
-$c = "./dum/"
+$yahoo = "some yahoo garbage"
 
-"$a `t`t`t- $([System.IO.Path]::GetFileName($a))"
-"$b `t`t- $([System.IO.Path]::GetFileName($b))"
-"$c `t`t`t- $([System.IO.Path]::GetFileName($c))"
+$wwwroot = "C:\\src\\github.io\\TestSite\\"
 
-$x = [System.IO.Path]::GetFileName($c)
+$tmpl = Get-Content .\TestSite\test.phtm -Encoding UTF8 -ReadCount 0 -Raw
+$text = $ExecutionContext.InvokeCommand.ExpandString($tmpl)
+$text | Out-File .\test-out.html
 
-$x -eq $null
-$x.Length
-[System.String]::IsNullOrWhiteSpace($x)
+
+
+
+# $a = "./dum"
+# $b = "./dum.html"
+# $c = "./dum/"
+
+# "$a `t`t`t- $([System.IO.Path]::GetFileName($a))"
+# "$b `t`t- $([System.IO.Path]::GetFileName($b))"
+# "$c `t`t`t- $([System.IO.Path]::GetFileName($c))"
+
+# $x = [System.IO.Path]::GetFileName($c)
+
+# $x -eq $null
+# $x.Length
+# [System.String]::IsNullOrWhiteSpace($x)
