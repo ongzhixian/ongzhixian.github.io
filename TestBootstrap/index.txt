@@ -32,7 +32,7 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
-$(Get-Content "$wwwroot/includes/header.phtm" -Encoding UTF8 -ReadCount 0 -Raw)
+$(Get-Content "./includes/header.phtm" -Encoding UTF8 -ReadCount 0 -Raw)
 
   <div class="container">
     <div class="row">
@@ -45,6 +45,13 @@ Test string $([DateTime]::Now) <br />
 Multiple line <br />
 Another line $([DateTime]::Now.ToString("yyyy-MM-dd")) <br />
         </p>
+
+
+<p>
+
+$($ExecutionContext.InvokeCommand.ExpandString($(Get-Content "./includes/header.phtm" -Encoding UTF8 -ReadCount 0 -Raw)))
+
+</p>
 
 
       </div>

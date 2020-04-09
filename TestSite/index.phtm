@@ -1,3 +1,5 @@
+$(Get-Location)
+$wwwroot
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +34,7 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
-$(Get-Content "./includes/header.phtm" -Encoding UTF8 -ReadCount 0 -Raw)
+$(Get-Content "$wwwroot/includes/header.phtm" -Encoding UTF8 -ReadCount 0 -Raw)
 
   <div class="container">
     <div class="row">
@@ -49,7 +51,7 @@ Another line $([DateTime]::Now.ToString("yyyy-MM-dd")) <br />
 
 <p>
 
-$($ExecutionContext.InvokeCommand.ExpandString($(Get-Content "./includes/header.phtm" -Encoding UTF8 -ReadCount 0 -Raw)))
+$($ExecutionContext.InvokeCommand.ExpandString($(Get-Content "$wwwroot/includes/header.phtm" -Encoding UTF8 -ReadCount 0 -Raw)))
 
 </p>
 
