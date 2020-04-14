@@ -82,3 +82,5 @@ https://docs.microsoft.com/en-us/adaptive-cards/sdk/authoring-cards/net
 https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
 
 https://www.ecma-international.org/publications/standards/Ecma-048.htm
+
+https://devblogs.microsoft.com/scripting/beginning-use-of-powershell-runspaces-part-1/
