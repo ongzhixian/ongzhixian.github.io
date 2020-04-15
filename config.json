@@ -1,0 +1,10 @@
+{
+    "Server" : {
+        "Port" : 123,
+        "IP": "127.0.0.1"
+    },
+
+    "WaitTime" : 1678,
+
+    "Name" : "xxx yyy zzz"
+}

@@ -62,6 +62,10 @@ Call .NET static class method that is in another static class
     [System.Net.Mime.MediaTypeNames+Text]::Html
 
 
+Add a Microsoft .NET Core class to a PowerShell session.
+
+    Add-Type -Path "C:\src\github.io\bin\System.Data.SQLite.dll"
+
 
 Reference:
 
