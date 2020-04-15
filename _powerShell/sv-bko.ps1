@@ -91,38 +91,59 @@ Function GetMimeType
     # System.Net.Mime.MediaTypeNames.Application.Zip
 }
 
+Function Log
+{
+    param (
+        [parameter(Mandatory)][string]$message,
+        [string]$filePath = "server.log",
+        [string]$dateTimeFormat = "u"
+    )
+
+    "$((Get-Date).ToString($dateTimeFormat)) $message" | Out-File -FilePath $filePath -Append
+}
+
+
 # Local variables initialization
 $rootPath = Get-Location | ForEach-Object { $_.Path }
 $prefix = "http://127.0.0.1:$port/"         # 127.0.0.1 is fairly universal
 $server = New-Object -TypeName System.Net.HttpListener
 $server.Prefixes.Add($prefix)
 Write-Debug "`$prefix        is $prefix" 
+$waitTime = New-Object -TypeName System.TimeSpan -ArgumentList 0,0,0,1,678
 
 try {
     
     $server.Start()
     Write-Host "Server started.`nAccess server at: $prefix"
 
-    $runServer = $true
-    while ($runServer)
+    while ($true)
     {
-        # Block until we get a request connection
-        # ZX: This unfortuntately also blocks CTRL+C termination of PowerShell
+        # The synchronous version of GetContext will block until we get a request connection
+        # This unfortuntately also blocks CTRL+C termination of PowerShell 
+        # This is a behaviour which we do not want.
+        # So we use the asynchronous version.
         Write-Host "Waiting for request"
-        $ctx = $server.GetContextAsync()
+        $ctxTask = $server.GetContextAsync()
 
-        $ctx
-        
+        # Instead of directly busy spin, we add a blocking wait call
+        while (-not $ctxTask.IsCompleted)
+        {
+            [void]$ctxTask.Wait($waitTime)
+        }
+
+        $ctx = $ctxTask.Result
+
         # Get corresponding requests and response objects
         [System.Net.HttpListenerRequest] $req = $ctx.Request
-        [System.Net.HttpListenerResponse] $resp = $null;
+        [System.Net.HttpListenerResponse] $resp = $ctx.Response;
 
-        if (($req.HttpMethod -eq "GET") -and ($req.Url.AbsolutePath -eq "/shutdown"))
-        {
-            #Console.WriteLine("Shutdown requested");
-            $runServer = false;
-            continue;
-        }
+        # Don't incorporate this method of shutting down
+        # if (($req.HttpMethod -eq "GET") -and ($req.Url.AbsolutePath -eq "/shutdown"))
+        # {
+        #     #Console.WriteLine("Shutdown requested");
+        #     $runServer = false;
+        #     continue;
+        # }
         
         $localPath = "$rootPath$($req.Url.AbsolutePath.Replace('/', [System.IO.Path]::DirectorySeparatorChar))"
 
@@ -144,15 +165,19 @@ try {
             }
             
             #$data = [System.Text.Encoding]::UTF8.GetBytes("File found.")
-            Send $ctx.Response $data -contentType $mimeType
+            Send $resp $data -contentType $mimeType
             Write-Host "Requesting: $($req.Url.AbsolutePath) ==> $localPath (200 $mimeType)"
         }
         else
         {
             $data = [System.Text.Encoding]::UTF8.GetBytes("404 - Resource not found.")
-            Send $ctx.Response $data -statusCode 404
+            Send $resp $data -statusCode 404
             Write-Host "Requesting: $($req.Url.AbsolutePath) ==> $localPath (404 $mimeType )"
         }
+
+        # Dispose
+        $ctxTask.Dispose()
+        
     }
 }
 catch {
