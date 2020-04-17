@@ -19,9 +19,9 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="css/normalize.css" />
-  <link rel="stylesheet" href="css/skeleton.css" />
-  <link rel="stylesheet" href="css/site.css" />
+  <link rel="stylesheet" href="/css/normalize.css" />
+  <link rel="stylesheet" href="/css/skeleton.css" />
+  <link rel="stylesheet" href="/css/site.css" />
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -34,14 +34,16 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <div class="row">
-      <nav class="top">
-        <ul>
-          <li ><a href="index.html">Leave overview</a></li>
-          <li class="selected"><a href="leave-setup.html">Leave setup</a></li>
-          <li><a href="leave-reports.html">Leave reports</a></li>
-          <li><a href="account.html">Account</a></li>
-        </ul>
+
+      <nav class="top" id="myTopnav">
+        <a href="index.html">Company setup</a>
+        <a href="benefits-setup.html" class="selected">Benefits setup</a>
+        <a href="employees.html">Employees</a>
+        <a href="../account/account.html">Account</a>
+        <a href="login.html" class="last-item">Log out</a>
+        <a href="javascript:void(0);" class="icon" onclick="toggleMenu();">&sect;</a>
       </nav>
+
     </div>
 
     <div class="row content-start">
@@ -166,6 +168,6 @@
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script src="js/site.js"></script>
+  <script src="/js/site.js"></script>
 </body>
 </html>
