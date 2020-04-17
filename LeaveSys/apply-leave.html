@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Your page title here :)</title>
+  <meta name="description" content="" />
+  <meta name="author" content="Ong Zhi Xian" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" />
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/skeleton.css" />
+  <link rel="stylesheet" href="css/site.css" />
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <nav class="top">
+        <ul>
+          <li><a href="index.html">Leave forecast</a></li>
+          <li><a href="leave-balance.html">Leave balance</a></li>
+          <li><a href="leave-history.html">Leave history</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- there are a few shorthand columns widths as well -->
+    <div class="row content-start">
+        <h4 style="margin-bottom: 0;">Apply leave</h4>
+        <form>
+          <div class="row content-start">
+
+            <div class="six columns">
+              <label for="exampleRecipientInput">Leave type</label>
+              <select class="u-full-width" id="exampleRecipientInput">
+                <option value="Option 1">Annual</option>
+                <option value="Option 2">Medical</option>
+                <option value="Option 3">Hospitalisation</option>
+                <option value="Option 3">Unpaid</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="six columns">
+              <label for="exampleEmailInput">Leave start date</label>
+              <div>
+                <input class="one-half column" type="date" placeholder="test@mailbox.com" id="exampleEmailInput">
+                <select class="one-half column" id="exampleRecipientInput">
+                  <option value="Option 1"></option>
+                  <option value="Option 1">AM leave</option>
+                  <option value="Option 2">PM leave</option>
+                  <option value="Option 1">Full day</option>
+                </select>
+              </div>
+            </div>
+            <div class="six columns">
+              <label for="exampleEmailInput">Date end date</label>
+              <div>
+                <input class="two-thirds column" type="date" placeholder="test@mailbox.com" id="exampleEmailInput">
+                <select class="one-third column" id="exampleRecipientInput">
+                  <option value="Option 1"></option>
+                  <option value="Option 1">AM</option>
+                  <option value="Option 2">PM</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="exampleMessage">Description</label>
+            <p>A short description about leave usage. This will appear in your leave details.</p>
+            <textarea class="u-full-width" placeholder="Description of leave" id="exampleMessage"></textarea>
+            <!-- <label class="example-send-yourself-copy">
+              <input type="checkbox">
+              <span class="label-body">Send a copy to yourself</span>
+            </label> -->
+          </div>
+
+          <!-- <div class="row">
+            <label for="exampleMessage">Contact details</label>
+            <p>Please provide details on how we can contact you in cases of emergency.</p>
+            <textarea class="u-full-width" placeholder="Contact details" id="exampleMessage"></textarea>
+          </div> -->
+
+          <div class="row">
+            <label for="exampleMessage">Work contingency plan</label>
+            <p>Please provide details on what to do for work-related contingencies.</p>
+            <textarea class="u-full-width" placeholder="Contingency plan" id="exampleMessage"></textarea>
+            <!-- <label class="example-send-yourself-copy">
+              <input type="checkbox">
+              <span class="label-body">Send a copy to yourself</span>
+            </label> -->
+          </div>
+
+          <input class="button-primary" type="submit" value="Submit form">
+        </form>
+
+    </div>
+
+    <!-- 
+    <footer>
+      <hr />
+    </footer> 
+    -->
+
+
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Your page title here :)</title>
+  <meta name="description" content="" />
+  <meta name="author" content="Ong Zhi Xian" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" />
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/skeleton.css" />
+  <link rel="stylesheet" href="css/site.css" />
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <nav class="top">
+        <ul>
+          <li><a href="index.html">Leave forecast</a></li>
+          <li><a href="leave-balance.html">Leave balance</a></li>
+          <li><a href="leave-history.html">Leave history</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- there are a few shorthand columns widths as well -->
+    <div class="row content-start">
+        
+      <h4 style="margin-bottom: 0;">Leave application confirmation</h4>
+
+        <div class="row content-start">
+
+          <h5>Overview</h5>
+
+          <p>You are applying for <span class="calculated">4.5</span> days of <span class="leave-type">annual leave</span> starting from 2020-Apr-16 PM to 2020-Apr-18.</p>
+
+
+          <h5>Description</h5>
+          
+          <p>
+            Go on holiday.
+          </p>
+
+          <h5>Work-related contingency plan</h5>
+
+          <p>
+            <span>Work-related contingency plan</span> 
+            For project X, can look for XXXX.<br/>
+            For project Y, can look for YYY.
+          </p>
+
+          <h5>Leave balance after consuming applied leave</h5>
+          
+
+        <table class="">
+          <thead>
+            <tr>
+              <th>Leave type</th>
+              <th>Credit (2019)</th>
+              <th>Credit (2020)</th>
+              <th>Consumed</th>
+              <th>Balance</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Annual leave</td>
+              <td>1</td>
+              <td>14</td>
+              <td>2</td>
+              <td>13</td>
+            </tr>
+            <tr>
+              <td>Medical leave</td>
+              <td>0</td>
+              <td>14</td>
+              <td>0</td>
+              <td>14</td>
+            </tr>
+            <tr>
+              <td>Hospitalisation leave</td>
+              <td>0</td>
+              <td>14</td>
+              <td>0</td>
+              <td>14</td>
+            </tr>
+            <tr>
+              <td>Unpaid leave</td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+              <td>-</td>
+            </tr>
+            
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <th>Total</th>
+              <th></th>
+              <th></th>
+              <th>0</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+
+        
+        </div>
+
+    </div>
+
+
+    <form>
+    </form>
+    <p>
+      Would you like to continue to apply leave?
+    </p>
+    <div class="row">
+        <input class="button-primary" type="submit" value="Yes, apply leave" />
+        <input class="button-primary" type="submit" value="No, amend leave" />
+        <button class="button-primary" id="myBtn">No, cancel leave</button>
+    </div>
+    
+
+
+
+
+    <!-- 
+    <footer>
+      <hr />
+    </footer> 
+    -->
+
+
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h4>Cancel leave application?</h4>  
+    </div>
+
+    <div class="modal-body">
+      <p>This will discard your leave application.</p>
+    </div>
+    
+    <div class="modal-footer">
+      <form>
+        <button class="button-primary" id="myBtn">Yes, cancel leave</button>
+        <button class="button-primary" id="myBtn">No, keep application around</button>
+      </form>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="js/site.js"></script>
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+
+
+</body>
+</html>

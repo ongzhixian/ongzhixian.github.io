@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Your page title here :)</title>
+  <meta name="description" content="" />
+  <meta name="author" content="Ong Zhi Xian" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" />
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/skeleton.css" />
+  <link rel="stylesheet" href="css/site.css" />
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <nav class="top">
+        <ul>
+          <li class="selected"><a href="index.html">Company setup</a></li>
+          <li><a href="leave-setup.html">Leave setup</a></li>
+          <li><a href="leave-reports.html">Leave reports</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="row content-start">
+      <h4>Welcome!</h4>
+
+      <p>
+        Let's get started in setting you up.
+        <br/>What is the name of your company?
+        <br/><b>Note</b> This name will be use in report headers.
+      </p>
+
+      <form method="POST" action="register-company-name-handler.ps1">
+        <div class="row">
+          <div class="six columns">
+            <label for="registerCompanyName">Company name</label>
+            <input class="u-full-width" type="text" placeholder="Company name" name="register_company_name" id="registerCompanyName" />
+          </div>
+        </div>
+        <input class="button-primary" type="submit" value="Register">
+      </form>
+    </div>
+
+    <footer>
+      <hr />
+      
+    </footer>
+
+
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="js/site.js"></script>
+</body>
+</html>

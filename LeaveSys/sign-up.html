@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Sign-up</title>
+  <meta name="description" content="" />
+  <meta name="author" content="Ong Zhi Xian" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" />
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/skeleton.css" />
+  <link rel="stylesheet" href="css/site.css" />
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="one-half column" style="margin-top: 4em">
+        <h4>Sign-up &mdash; Application</h4>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="twelve columns">
+        
+
+        <p>
+          This form is for signing up new companies.
+        </p>
+
+        <p>
+          Sign-up with us using your email with us. 
+          <br/>We will setup your account and sent you an email when its ready.
+          <br/><b>Note</b> The holder of this account will manage employees of the company.
+        </p>
+
+        <form method="POST" action="signup-handler.ps1">
+          <div class="row">
+            <div class="six columns">
+              <label for="signupEmail">Email</label>
+              <input class="u-full-width" type="email" placeholder="email@company.com" name="signup_email" id="signup_email" />
+            </div>
+          </div>
+          <input class="button-primary" type="submit" value="Sign-up">
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="js/site.js"></script>
+</body>
+</html>
