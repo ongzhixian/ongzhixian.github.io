@@ -12,3 +12,7 @@ body {
 }
 
 
+.icon-button {
+    border: none;
+    background: none;
+}

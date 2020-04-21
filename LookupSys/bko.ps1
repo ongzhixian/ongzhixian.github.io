@@ -284,13 +284,7 @@ Function Start-WebHost {
                 # }
 
                 try {
-                    # [System.IO.StreamReader] $sr = New-Object -TypeName System.IO.StreamReader -ArgumentList $req.InputStream, $req.ContentEncoding
-                    # $postDataString = $sr.ReadToEnd()
-                    # #$postDataString
-                    # $postHereString = $postDataString.Replace('&', [System.Environment]::NewLine)
-                    # $postData = ConvertFrom-StringData $postHereString
-                    # $postData
-                    # $postData.GetType().ToString() # System.Collections.Hashtable
+
                     
                     # TODO: Check if $localPath exists
                     if ([System.IO.File]::Exists($localPath)) {
@@ -308,6 +302,15 @@ Function Start-WebHost {
                         }
                     }
                     else {
+
+                        [System.IO.StreamReader] $sr = New-Object -TypeName System.IO.StreamReader -ArgumentList $req.InputStream, $req.ContentEncoding
+                        $postDataString = $sr.ReadToEnd()
+                        $postDataString
+                        $postHereString = $postDataString.Replace('&', [System.Environment]::NewLine)
+                        $postData = ConvertFrom-StringData $postHereString
+                        $postData
+                        # $postData.GetType().ToString() # System.Collections.Hashtable
+
                         $data = [System.Text.Encoding]::UTF8.GetBytes("404 - Resource not found.")
                         Send $resp $data -statusCode 404
                         Write-Host "Requesting: $($req.Url.AbsolutePath) ==> $localPath (404 $mimeType)"
@@ -369,4 +372,4 @@ Function Start-WebHost {
 
 # Module member export definitions
 #Export-ModuleMember -Function Start-WebHost
-Start-WebHost
+Start-WebHost 3194
