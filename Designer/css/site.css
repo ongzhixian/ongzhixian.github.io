@@ -16,3 +16,11 @@ body {
     border: none;
     background: none;
 }
+
+
+html.studio,
+body.studio,
+div.studio {
+    height: 100%;
+    overflow-y: hidden;
+}

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="studio">
+<html lang="en">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
@@ -11,7 +11,7 @@
 
     <title>Designer</title>
   </head>
-  <body class="studio">
+  <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="/">Designer</a>
@@ -49,11 +49,10 @@
       </div>
     </nav>
 
-    <div class="container-fluid studio">
+    <div class="container-fluid">
       
-      <div class="row studio">
+      <div class="row">
 
-        <!-- Components/Toolbox -->
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
@@ -138,44 +137,69 @@
         </nav>
     
         <main role="main" class="col-md-8 ml-sm-auto col-lg-8 px-4">
-          <div id="chart" style="width: 100%; height:100%; background-color: antiquewhite;"></div>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2" contenteditable="true">Dashboard</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group mr-2">
+                
+                <button type="button" class="btn btn-sm btn-outline-secondary">Import</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+              </div>
+
+              <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+              
+            </div>
+          </div>
+    
+          <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
+
+          <div class="my-4 w-100" id="diagram" width="900" height="380" style="background-color: #efefef; height:380px" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    
+
         </main>
 
-        <!-- Object properties -->
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar" style="background-color: aquamarine !important;">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
-
-            <div class="properties">
-              
-              <h4>Properties</h4>
-
-              <div>
-                <label>Type</label><br/>
-                <input type="text" id="object_type" />
-              </div>
-
-              <div>
-                <label>Name</label><br/>
-                <input type="text" id="object_name" />
-              </div>
-
-              <div>
-                <label>Parameter</label><br/>
-                <input type="text" id="object_parameter" />
-              </div>
-
-              <div>
-                <label>Description</label><br/>
-                <input type="text" id="object_description" />
-              </div>
-
-              &nbsp;
-              <div>
-                <button class="btn btn-primary" type="button">Add</button>
-              </div>
-
-            </div>  
-
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <span style="font-size:x-large">Properties</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">
+                  <span data-feather="home"></span>
+                  Activity <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item" id="Orders" draggable="true" ondragstart="drag(event)">
+                  <span data-feather="file"></span>
+                  Orders
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="shopping-cart"></span>
+                  Products
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="users"></span>
+                  Customers
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="bar-chart-2"></span>
+                  Reports
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="layers"></span>
+                  Integrations
+                </a>
+              </li>
+            </ul>
+    
 
             <!--
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
