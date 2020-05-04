@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <link rel="stylesheet"
+    href="//fonts.googleapis.com/css2?family=Quattrocento&family=Quattrocento+Sans:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="/css/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" href="/css/bootswatch/minty/bootstrap.css" />
+  <link rel="stylesheet" href="/css/quill/quill.snow.css" />
+  <link rel="stylesheet" href="/css/site.css" />
+
+  <title>Notes</title>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Notes</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+  <div class="container-fluid" style="margin-top: .3em;">
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary">New</button>
+        <button type="button" class="btn btn-primary">Load</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+
+      <div class="col-8">
+        <input type="hidden" id="docId_112212" />
+        <div style="font-size: 2em;" contenteditable="true">
+          <input type="text" style="width:100%; border: none; color:#333;font-family: Georgia, 'Times New Roman', Times, serif; outline: none;" placeholder="Title" />
+        </div>
+        <div class="standalone-container" >
+          <div id="snow-container"></div>
+        </div>
+        <div class="tag-rack"></div>
+      </div>
+
+      <div class="col">
+        <h5>Recent</h5>
+        <ol>
+          <li>file1</li>
+          <li>file2</li>
+          <li>file3</li>
+          <li>file4</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- End of document -->
+  <script src="/js/jquery/jquery-3.5.0.js"></script>
+  <script src="/js/popper/popper.js"></script>
+  <script src="/js/bootstrap/bootstrap.js"></script>
+  <script src="/js/quill/quill.js"></script>
+  <script src="/js/site.js"></script>
+
+  <script>
+
+    const store = {
+
+    };
+
+    const editor = {
+      save : function() {
+        try {
+          localStorage.setItem('key', 'value');
+
+        } catch (domException) {
+          if (
+            ['QuotaExceededError', 'NS_ERROR_DOM_QUOTA_REACHED'].includes(
+              domException.name
+            )
+          ) {
+            // handle quota limit exceeded error
+
+            // https://developer.chrome.com/apps/offline_storage#managing_quota
+          }
+        }
+      }
+    };
+
+    
+
+    var quill = new Quill('#snow-container', {
+      placeholder: 'Compose an epic...',
+      theme: 'snow'
+    });
+    quill.keyboard.addBinding({
+      key: 'S',
+      ctrlKey: true
+    }, function (range, context) {
+      //this.quill.formatText(range, 'bold', true);
+      window.alert("TODO: Save action");
+
+      // 
+
+
+      
+
+
+    });
+
+
+
+    // Request storage usage and capacity left
+    // Choose either Temporary or Persistent
+    navigator.webkitTemporaryStorage.queryUsageAndQuota (
+        function(usedBytes, grantedBytes) {
+            console.log('we are using ', usedBytes, ' of ', grantedBytes, 'bytes');
+        },
+        function(e) { console.log('Error', e);  }
+    );
+
+
+    // set html content
+    // quill.setHTML = (html) => {
+    //   editor.root.innerHTML = html;
+    // };
+
+    // // get html content
+    // quill.getHTML = () => {
+    //   return editor.root.innerHTML;
+    // };
+
+    // // usages
+    // quill.setHTML('<b>Hello my friend</b>');
+
+    // quill.on('text-change', () => {
+    //   console.log('get html', quill.getHTML());
+    // });
+
+
+
+      // const main = {
+      //   init = function() {
+      //   }
+      // };
+
+      // (function () {
+      //   main.init();
+      // }());
+
+  </script>
+
+
+</body>
+
+</html>
