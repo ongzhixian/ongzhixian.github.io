@@ -13,6 +13,25 @@
   <link rel="stylesheet" href="/css/quill/quill.snow.css" />
   <link rel="stylesheet" href="/css/site.css" />
 
+  <!-- 
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <style>
+
+    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value='roboto']::before,
+    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value='roboto']::before
+    {
+      content: 'Roboto';
+      font-family: 'Roboto';
+    }
+
+    .ql-font-roboto {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+  -->
+
   <title>Notes</title>
 </head>
 
@@ -59,9 +78,28 @@
   <div class="container-fluid" style="margin-top: .3em;">
     <div class="row">
       <div class="col">
-        <button type="button" id="newButton" class="btn btn-primary">New</button>
-        <button type="button" id="loadButton" class="btn btn-primary">Load</button>
-        <button type="button" id="saveButton" class="btn btn-primary shake stop">Save</button>
+
+        <div class="action-buttons">
+          <button type="button" id="newButton" class="btn btn-primary">New</button>
+          <!-- <button type="button" id="loadButton" class="btn btn-primary">Load</button> -->
+          <button type="button" id="saveButton" class="btn btn-primary shake stop">Save</button>
+        </div>
+
+        <div style="margin-top: 1em;">
+          <h5>Status</h5>
+          <span id="statusText">Unsaved</span>
+        </div>
+
+        <div style="margin-top: 1em;">
+          <h5>Last saved date</h5>
+          <span id="docDate">Not applicable</span>
+        </div>
+
+        <div style="margin-top: 1em;">
+          <h5>Tags</h5>
+          <span></span>
+        </div>
+
       </div>
 
       <div class="col-8">
@@ -97,100 +135,185 @@
 
   <script>
 
-    const store = {
-
-    };
-
-    var titleElement;
-
     const editor = {
+      // Block variables
       quill: null,
-      //titleElement: null, 
+      titleElement: null,
+      docIdElement: null,
       docId: null,
-      newButton: null, 
-      loadButton: null, 
-      saveButton: null, 
-
-      uuid4: function () {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-          let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-          return v.toString(16);
-        });
-      },
+      newButton: null,
+      saveButton: null,
+      docDateElement: null,
+      statusElement: null,
 
       init: function () {
-
-        docId = editor.uuid4();
-
-        document.getElementById("docId").value = docId;
-
+        // Find elements
+        editor.docIdElement = document.getElementById("docId");
+        editor.titleElement = document.getElementById("title_text");
         editor.newButton = document.getElementById("newButton");
-        editor.loadButton = document.getElementById("loadButton");
         editor.saveButton = document.getElementById("saveButton");
 
-        editor.newButton.addEventListener("click", function(e) {
-          console.log("Clicked new");
-        });
+        editor.docDateElement = document.getElementById("docDate");
+        editor.statusElement = document.getElementById("statusText");
 
-        editor.loadButton.addEventListener("click", function(e) {
-          console.log("Clicked loaded");
-        });
+        
+        // var FontAttributor = Quill.import('attributors/class/font');
+        // FontAttributor.whitelist = [
+        //   'roboto'
+        // ];
+        // Quill.register(FontAttributor, true);
 
-        editor.saveButton.addEventListener("click", function(e) {
-          console.log("Clicked saved");
-        });
+        // var Font = Quill.import('formats/font');
+        // Font.whitelist = ['sans serif', 'roboto'];
+        // Quill.register(Font, true);
 
-        // titleElement = document.getElementById("title_text");
-        // titleElement.addEventListener("keyDown", function(e) {
-        //   debugger;
-        //   console.log(e.key, e.keyCode);
 
-        //   if ((e.key === "Enter") || (e.key === "Tab") || (e.key === ",")) {
-        //   }
-        // });
+        // let Font = Quill.import('formats/font');
+        // // We do not add Sans Serif since it is the default
+        // Font.whitelist = ['inconsolata', 'roboto', 'mirza', 'arial'];
+        // Quill.register(Font, true);
+
+
+        var toolbarOptions = [
+          ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+          ['blockquote', 'code-block'],
+          ['link', 'image'],
+
+          [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+          [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+          [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+          [{ 'direction': 'rtl' }],                         // text direction
+
+          // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+          [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+          [{ 'font': [] }],
+          [{ 'align': [] }],
+
+          ['clean']                                         // remove formatting button
+        ];
+
+
+
+
 
         editor.quill = new Quill('#snow-container', {
-          placeholder: 'Compose an epic...',
+          placeholder: 'Define content here...',
+          modules: {
+            toolbar: toolbarOptions
+          },
           theme: 'snow'
         });
 
-        // Keyboard binding for (N)ew, (L)oad, (S)ave
-        editor.quill.keyboard.addBinding({
-          key: 'N',
-          ctrlKey: true
-        }, function (range, context) {
-          //this.quill.formatText(range, 'bold', true);
-          window.alert("TODO: New action");
-          // 
+        // Bind events
+        editor.bindQuillEditor();
+        editor.bindTitleInput();
+        editor.bindButtons();
+
+        // Initialize new document
+        editor.new();
+      },
+
+      ////////////////////////////////////////
+      // Event-bindings 
+
+      bindTitleInput: function () {
+
+        editor.titleElement.addEventListener("keydown", function (e) {
+
+          //console.log(e.key, e.keyCode, e.ctrlKey);
+          // if ((e.key === "Enter") || (e.key === "Tab") || (e.key === ",")) {
+          // }
+
+          if ((83 === e.keyCode) && (e.ctrlKey)) { // keyCode 83 = 's' or 'S'
+            console.debug("element=[editor.titleElement]&event=[keydown]")
+            e.preventDefault();
+            editor.save();
+          }
         });
-        editor.quill.keyboard.addBinding({
-          key: 'L',
-          ctrlKey: true
-        }, function (range, context) {
-          //this.quill.formatText(range, 'bold', true);
-          window.alert("TODO: Load action");
-          // 
+      },
+
+      bindButtons: function () {
+        editor.newButton.addEventListener("click", function (e) {
+          console.debug("element=[editor.newButton]&event=[click]");
+          editor.new();
         });
+
+        editor.saveButton.addEventListener("click", function (e) {
+          console.debug("element=[editor.saveButton]&event=[click]");
+          editor.save();
+        });
+      },
+
+      bindQuillEditor: function () {
+
+        // Keyboard binding for (S)ave
         editor.quill.keyboard.addBinding({
           key: 'S',
           ctrlKey: true
         }, function (range, context) {
-          //this.quill.formatText(range, 'bold', true);
-          window.alert("TODO: Save action");
-          // 
+          console.debug("element=[editor.quill]&event=[keyboard]");
           editor.save();
+          //this.quill.formatText(range, 'bold', true);
+        });
+
+        editor.quill.on('text-change', function (delta, oldDelta, source) {
+          if (source == 'api') {
+            // We usually don't care about this
+            // Leaving code here to remind us there's this potential.
+            console.debug("An API call triggered this change.");
+          } else if (source == 'user') {
+            editor.statusElement.innerText = "Unsaved";
+            console.log("A user action triggered this change.");
+          }
         });
 
       },
 
+      ////////////////////////////////////////
+      // Business functions 
+
       new: function () {
-        window.alert("New function");
+        console.debug("new : function () {");
+
+        // Initialize a new docId for document
+        editor.docId = editor.uuid4();
+        editor.docIdElement.value = editor.docId;
+
+        // Clear title and editor contents
+        editor.statusElement.innerText = "Unsaved";
+        editor.docDateElement.innerText = "Not applicable";
+
+        editor.titleElement.value = "";
+        editor.quill.setText("");
+
+        console.log("New document [" + editor.docId + "]");
       },
-      load: function () {
-        window.alert("Load function");
+
+      load: function (docId) {
+        console.debug("load : function () {");
+
+        console.log("Loading document [" + docId + "]");
+
+        let doc = JSON.parse(localStorage.getItem(docId));
+
+        // Restore UI
+        editor.docId = docId;
+        editor.docIdElement.value = docId;
+        editor.titleElement.value = doc.title;
+        editor.quill.setContents(doc.content);
+
+        editor.statusElement.innerText = "Loaded";
+        editor.docDateElement.innerText = doc.date;
+
+        console.log("Document [" + editor.docId + "] loaded.")
       },
+
       save: function () {
-        window.alert("Save function");
+        console.debug("save : function () {");
+
         // Get
         let docId = document.getElementById("docId").value;
         let title = document.getElementById("title_text").value;
@@ -203,19 +326,25 @@
         if (saveButton.classList.contains("stop"))
           saveButton.classList.remove("stop");
 
+        let savedDate = new Date;
+
         localStorage.setItem(docId, JSON.stringify({
           "title": title,
           "content": content,
-          "date": new Date
+          "date": savedDate
         }));
 
-        console.log("Items in localstorage (after):", localStorage.length);
+        console.debug("Items in localstorage (after):", localStorage.length);
 
         // Refresh recent list
         editor.listRecent();
 
+        editor.statusElement.innerText = "Saved";
+        editor.docDateElement.innerText = savedDate.toJSON();
+
         saveButton.classList.add("stop");
 
+        console.log("Document [" + docId + "] saved.")
         // Remove stop animation and add it back after 1678ms
         // let saveButton = document.getElementById("saveButton");
         // if (saveButton.classList.contains("stop"))
@@ -270,15 +399,9 @@
           recentItem.setAttribute("class", "recent-item");
           recentItem.setAttribute("data-docId", doc.docId);
           recentItem.addEventListener("click", function (e) {
-
+            console.debug("element=[recentItem]&event=[click]")
             let docId = e.target.dataset["docid"];
-            let doc = JSON.parse(localStorage.getItem(docId));
-
-            // Restore UI
-            document.getElementById("docId").value = docId;
-            document.getElementById("title_text").value = doc.title;
-            editor.quill.setContents(doc.content);
-
+            editor.load(docId);
           });
 
           // Define contents of recent item
@@ -290,7 +413,20 @@
           // Add item to recent item list 
           ol.append(recentItem);
         }
+      },
+
+      ////////////////////////////////////////
+      // Common functions 
+
+      uuid4: function () {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+          let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
       }
+
+      // End of block
+
 
       // ,
       // saves: function () {
@@ -330,12 +466,12 @@
 
     // Request storage usage and capacity left
     // Choose either Temporary or Persistent
-    navigator.webkitTemporaryStorage.queryUsageAndQuota(
-      function (usedBytes, grantedBytes) {
-        console.log('we are using ', usedBytes, ' of ', grantedBytes, 'bytes');
-      },
-      function (e) { console.log('Error', e); }
-    );
+    // navigator.webkitTemporaryStorage.queryUsageAndQuota(
+    //   function (usedBytes, grantedBytes) {
+    //     console.log('we are using ', usedBytes, ' of ', grantedBytes, 'bytes');
+    //   },
+    //   function (e) { console.log('Error', e); }
+    // );
 
 
     // set html content
@@ -384,19 +520,19 @@
 
 
 
-    document.addEventListener("DOMContentLoaded", function(){
+    document.addEventListener("DOMContentLoaded", function () {
       // Handler when the DOM is fully loaded
       console.log("loading");
 
-      titleElement = document.getElementById("title_text");
-      titleElement.addEventListener("change", function(e) {
-        // console.
-        debugger;
-        console.log("text changed");
-      });
-      
+      // titleElement = document.getElementById("title_text");
+      // titleElement.addEventListener("keyDown", function(e) {
+      //   // console.
+      //   debugger;
+      //   console.log("text changed");
+      // });
+
       console.log("loaded");
-      
+
     });
 
     document.addEventListener("keyPress", function (e) {
