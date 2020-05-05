@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <link rel="stylesheet"
+    href="//fonts.googleapis.com/css2?family=Quattrocento&family=Quattrocento+Sans:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="/css/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" href="/css/bootswatch/minty/bootstrap.css" />
+
+  <title>Arbor</title>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Notes</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/index.html">Notes editor</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Graphs
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/index-arbor.html">Arbor graph <span class="sr-only">(current)</span></a>
+            <a class="dropdown-item" href="/index-signma.html">Sigma graph</a>
+
+            <!-- 
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+            -->
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+  <div class="container-fluid" style="margin-top: .3em;">
+    <div class="row">
+      <div class="col">
+
+        <div class="action-buttons">
+          <button type="button" id="newButton" class="btn btn-primary">New</button>
+          <!-- <button type="button" id="loadButton" class="btn btn-primary">Load</button> -->
+          <button type="button" id="saveButton" class="btn btn-primary shake stop">Save</button>
+        </div>
+
+        <div style="margin-top: 1em;">
+          <h5>Status</h5>
+          <span id="statusText">Unsaved</span>
+        </div>
+
+        <div style="margin-top: 1em;">
+          <h5>Last saved date</h5>
+          <span id="docDate">Not applicable</span>
+        </div>
+
+        <div style="margin-top: 1em;">
+          <h5>Tags</h5>
+          <span></span>
+        </div>
+
+      </div>
+
+      <div class="col-8">
+        <canvas id="viewport" width="800" height="600"
+          style="border: 1px solid; margin: 0 auto; display: block;"></canvas>
+      </div>
+
+      <div class="col">
+        <h5>Recent</h5>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- End of document -->
+  <script src="/js/jquery/jquery-3.5.0.js"></script>
+  <script src="/js/popper/popper.js"></script>
+  <script src="/js/bootstrap/bootstrap.js"></script>
+  <script src="/js/arbor/arbor.js"></script>
+  <script src="/js/arbor/arbor-tween.js"></script>
+  <script src="/js/site.js"></script>
+
+  <script>
+    var g;
+
+    (function ($) {
+
+
+
+
+      g = {
+        sys: arbor.ParticleSystem(1000, 600, 0.5),
+        init: function () {
+          g.sys.parameters({ gravity: true });
+          g.sys.renderer = g.renderer("#viewport"); // our newly created renderer will have its .init() method called shortly by sys...
+        },
+
+        draw: function () {
+          // add some nodes to the graph and watch it go...
+          g.sys.addEdge('a', 'b')
+          g.sys.addEdge('a', 'c')
+          g.sys.addEdge('a', 'd')
+          g.sys.addEdge('a', 'e')
+          g.sys.addNode('f', { alone: true, mass: .25 })
+
+        },
+
+        renderer: function (canvas) {
+          var canvas = $(canvas).get(0)
+          var ctx = canvas.getContext("2d");
+          var particleSystem
+
+          var that = {
+            init: function (system) {
+              //
+              // the particle system will call the init function once, right before the
+              // first frame is to be drawn. it's a good place to set up the canvas and
+              // to pass the canvas size to the particle system
+              //
+              // save a reference to the particle system for use in the .redraw() loop
+              particleSystem = system
+
+              // inform the system of the screen dimensions so it can map coords for us.
+              // if the canvas is ever resized, screenSize should be called again with
+              // the new dimensions
+              particleSystem.screenSize(canvas.width, canvas.height)
+              particleSystem.screenPadding(80) // leave an extra 80px of whitespace per side
+
+              // set up some event handlers to allow for node-dragging
+              that.initMouseHandling()
+            },
+
+            redraw: function () {
+              // 
+              // redraw will be called repeatedly during the run whenever the node positions
+              // change. the new positions for the nodes can be accessed by looking at the
+              // .p attribute of a given node. however the p.x & p.y values are in the coordinates
+              // of the particle system rather than the screen. you can either map them to
+              // the screen yourself, or use the convenience iterators .eachNode (and .eachEdge)
+              // which allow you to step through the actual node objects but also pass an
+              // x,y point in the screen's coordinate system
+              // 
+              ctx.fillStyle = "white"
+              ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+              particleSystem.eachEdge(function (edge, pt1, pt2) {
+                // edge: {source:Node, target:Node, length:#, data:{}}
+                // pt1:  {x:#, y:#}  source position in screen coords
+                // pt2:  {x:#, y:#}  target position in screen coords
+
+                // draw a line from pt1 to pt2
+                ctx.strokeStyle = "rgba(0,0,0, .333)"
+                ctx.lineWidth = 1
+                ctx.beginPath()
+                ctx.moveTo(pt1.x, pt1.y)
+                ctx.lineTo(pt2.x, pt2.y)
+                ctx.stroke()
+              })
+
+              particleSystem.eachNode(function (node, pt) {
+                // node: {mass:#, p:{x,y}, name:"", data:{}}
+                // pt:   {x:#, y:#}  node position in screen coords
+
+                // draw a rectangle centered at pt
+                var w = 10
+                ctx.fillStyle = (node.data.alone) ? "orange" : "black"
+                //ctx.fillRect(pt.x - w / 2, pt.y - w / 2, w, w);
+
+                var label = "asd";
+                if (label) {
+                  ctx.font = "bold 11px Arial"
+                  ctx.textAlign = "center"
+
+                  // if (node.data.region) ctx.fillStyle = palette[node.data.region]
+                  // else ctx.fillStyle = "#888888"
+                  ctx.fillStyle = "#888888"
+
+                  // ctx.fillText(label||"", pt.x, pt.y+4)
+                  ctx.fillText(label || "", pt.x, pt.y + 4)
+                }
+
+              })
+            },
+
+            initMouseHandling: function () {
+              // no-nonsense drag and drop (thanks springy.js)
+              var dragged = null;
+
+              // set up a handler object that will initially listen for mousedowns then
+              // for moves and mouseups while dragging
+              var handler = {
+                clicked: function (e) {
+                  var pos = $(canvas).offset();
+                  _mouseP = arbor.Point(e.pageX - pos.left, e.pageY - pos.top)
+                  dragged = particleSystem.nearest(_mouseP);
+
+                  if (dragged && dragged.node !== null) {
+                    // while we're dragging, don't let physics move the node
+                    dragged.node.fixed = true
+                  }
+
+                  $(canvas).bind('mousemove', handler.dragged)
+                  $(window).bind('mouseup', handler.dropped)
+
+                  return false
+                },
+                dragged: function (e) {
+                  var pos = $(canvas).offset();
+                  var s = arbor.Point(e.pageX - pos.left, e.pageY - pos.top)
+
+                  if (dragged && dragged.node !== null) {
+                    var p = particleSystem.fromScreen(s)
+                    dragged.node.p = p
+                  }
+
+                  return false
+                },
+
+                dropped: function (e) {
+                  if (dragged === null || dragged.node === undefined) return
+                  if (dragged.node !== null) dragged.node.fixed = false
+                  dragged.node.tempMass = 1000
+                  dragged = null
+                  $(canvas).unbind('mousemove', handler.dragged)
+                  $(window).unbind('mouseup', handler.dropped)
+                  _mouseP = null
+                  return false
+                }
+              }
+
+              // start listening
+              $(canvas).mousedown(handler.clicked);
+
+            },
+
+          }
+          return that
+        }
+      };
+
+
+      $(document).ready(function () {
+
+        g.init();
+        g.draw();
+
+      })
+
+    })(this.jQuery)
+  </script>
+
+</body>
+
+</html>
