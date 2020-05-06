@@ -1,0 +1,722 @@
+﻿<!doctype html>
+<html lang="en" class="full">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link rel="stylesheet"
+          href="//fonts.googleapis.com/css2?family=Quattrocento&family=Quattrocento+Sans:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" href="/css/bootswatch/minty/bootstrap.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <style type="text/css">
+        #cy {
+            width: 100%;
+            height: 80%;
+            display: block;
+            border: 1px solid;
+        }
+    </style>
+
+    <title>Cytoscape</title>
+</head>
+
+<body class="full">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Notes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html">Notes editor</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Graphs
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/index-arbor.html">Arbor graph</a>
+                        <a class="dropdown-item" href="/index-cytoscape.html">Cytoscape graph <span class="sr-only">(current)</span></a>
+                        <a class="dropdown-item" href="/index-signma.html">Sigma graph</a>
+
+                        <!--
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        -->
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: .3em; height:100%;">
+        <div class="row" style="height:100%;">
+            <div class="col">
+
+                <div class="action-buttons">
+                    <button type="button" id="newButton" class="btn btn-primary">New</button>
+                    <button type="button" id="saveButton" class="btn btn-primary shake stop">Save</button>
+                </div>
+
+                <div style="margin-top: 1em;">
+                    <h5>Status</h5>
+                    <span id="statusText">Unsaved</span>
+                </div>
+
+                <div style="margin-top: 1em;">
+                    <h5>Last saved date</h5>
+                    <span id="docDate">Not applicable</span>
+                </div>
+
+                <div style="margin-top: 1em;">
+                    <h5>Tags</h5>
+                    <span></span>
+                </div>
+
+            </div>
+
+            <div class="col-8">
+                <input type="hidden" id="docId" />
+
+                <div style="font-size: 2em;">
+                    <input type="text" id="titleText"
+                           style="width:100%; border: none; color:#333;font-family: Georgia, 'Times New Roman', Times, serif; outline: none;"
+                           placeholder="Title" />
+                </div>
+
+                <div id="cy"></div>
+
+                <div id="buttons">
+                    <button id="start">Start on selected</button>
+                    <button id="draw-on">Draw mode on</button>
+                    <button id="draw-off">Draw mode off</button>
+                </div>
+            </div>
+
+            <div class="col">
+
+                <div id="addGraphItemPanel">
+                    <h5>Properties</h5>
+
+                    <!-- Id field -->
+                    <div class="row">
+                        <div class="col-4">Id</div>
+                        <div class="col-8">
+                            <input type="text" id="graphItemId" />
+                        </div>
+                    </div>
+
+                    <!-- Source field -->
+                    <div class="row">
+                        <div class="col-4">Source</div>
+                        <div class="col-8">
+                            <input type="text" id="graphItemSource" />
+                        </div>
+                    </div>
+
+
+                    <!-- Target field -->
+                    <div class="row">
+                        <div class="col-4">Target</div>
+                        <div class="col-8">
+                            <input type="text" id="graphItemTarget" />
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:1em;">
+                        <div class="col-12">
+                            <button id="addGraphItemButton">Add</button>
+                            <button id="updateGraphItemButton">Update</button>
+                            <button id="deleteGraphItemButton">Delete</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="recentItemsPanel" style="margin-top:1em">
+                    <h5>Recent</h5>
+                    <ol id="recentList">
+                        <!-- <li data-docId="xxxxx" class="recent-item">file1</li> -->
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- End of document -->
+    <script src="/js/jquery/jquery-3.5.0.js"></script>
+    <script src="/js/popper/popper.js"></script>
+    <script src="/js/bootstrap/bootstrap.js"></script>
+    <script src="/js/cytoscape/cytoscape.min.js"></script>
+    <script src="/js/cytoscape/cytoscape-edgehandles.js"></script>
+    <script src="/js/site.js"></script>
+    <script>
+
+        const g = {
+            cy: null,
+            addGraphItemButton: null,
+            graphItemId: null,
+            graphItemSource: null,
+            graphItemTarget: null,
+            newButton: null,
+            saveButton: null,
+            docIdElement: null,
+            titleTextElement: null,
+            docId: null,
+
+            init: function () {
+
+
+                g.docIdElement = document.getElementById("docId");
+                g.titleTextElement = document.getElementById("titleText");
+
+                g.graphItemId = document.getElementById("graphItemId");
+                g.graphItemSource = document.getElementById("graphItemSource");
+                g.graphItemTarget = document.getElementById("graphItemTarget");
+                g.addGraphItemButton = document.getElementById("addGraphItemButton");
+
+                g.newButton = document.getElementById("newButton");
+                g.saveButton = document.getElementById("saveButton");
+
+                g.cy = cytoscape({
+
+                    container: document.getElementById('cy'), // container to render in
+
+                    elements: [ // list of graph elements to start with
+                        // Nodes
+                        //{ data: { id: 'tfs' } }
+                        //, { data: { id: 'refund' } }
+                        //, { data: { id: 'event feed' } }
+                        //, { data: { id: 'CDC' } }
+                        //, { data: { id: 'Transaction' } }
+                        //, { data: { id: 'a' } }
+                        //, { data: { id: 'b' } }
+                        // Edges
+                        //, { data: { source: 'CDC', target: 'Transaction' } }
+                        //, { data: { source: 'event feed', target: 'CDC' } }
+                    ],
+
+                    style: [ // the stylesheet for the graph
+                        {
+                            selector: 'node',
+                            style: {
+                                'background-color': '#666',
+                                'label': 'data(id)'
+                            }
+                        },
+
+                        {
+                            selector: 'edge',
+                            style: {
+                                'width': 3,
+                                'line-color': '#ccc',
+                                'target-arrow-color': '#ccc',
+                                //'target-arrow-shape': 'triangle',
+                                //'curve-style': 'bezier'
+                            }
+                        },
+
+                        // some style for the extension
+                        {
+                            selector: '.eh-handle',
+                            style: {
+                                'background-color': 'red',
+                                'width': 12,
+                                'height': 12,
+                                'shape': 'ellipse',
+                                'overlay-opacity': 0,
+                                'border-width': 12, // makes the handle easier to hit
+                                'border-opacity': 0
+                            }
+                        },
+
+                        {
+                            selector: '.eh-hover',
+                            style: {
+                                'background-color': 'red'
+                            }
+                        },
+
+                        {
+                            selector: '.eh-source',
+                            style: {
+                                'border-width': 2,
+                                'border-color': 'red'
+                            }
+                        },
+
+                        {
+                            selector: '.eh-target',
+                            style: {
+                                'border-width': 2,
+                                'border-color': 'red'
+                            }
+                        },
+
+                        {
+                            selector: '.eh-preview, .eh-ghost-edge',
+                            style: {
+                                'background-color': 'red',
+                                'line-color': 'red',
+                                'target-arrow-color': 'red',
+                                'source-arrow-color': 'red'
+                            }
+                        },
+
+                        {
+                            selector: '.eh-ghost-edge.eh-preview-active',
+                            style: {
+                                'opacity': 0
+                            }
+                        }
+                    ],
+
+                    layout: {
+                        name: 'grid',
+                        rows: 1
+                    }
+
+                });
+
+                debugger;
+                var eh = cy.edgehandles();
+
+                document.querySelector('#draw-on').addEventListener('click', function () {
+                    eh.enableDrawMode();
+                });
+
+                document.querySelector('#draw-off').addEventListener('click', function () {
+                    eh.disableDrawMode();
+                });
+
+                document.querySelector('#start').addEventListener('click', function () {
+                    eh.start(cy.$('node:selected'));
+                });
+
+                // Bind events
+                g.bindInput();
+                g.bindButtons();
+                g.bindGraph();
+
+                // Initialize new document
+                g.new();
+            },
+
+            ////////////////////////////////////////
+            // Event-bindings
+
+            bindInput: function () {
+                g.graphItemId.addEventListener("keydown", function (e) {
+                    //e.preventDefault();
+                    //debugger;
+                    //console.log(e.key, e.keyCode);
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        g.addNode(e);
+                        g.graphItemId.value = "";
+                    }
+                });
+
+                g.graphItemSource.addEventListener("keydown", function (e) {
+                    //e.preventDefault();
+                    //debugger;
+                    //console.log(e.key, e.keyCode);
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        g.addNode(e);
+                        g.graphItemSource.value = "";
+                    }
+                });
+
+                g.graphItemTarget.addEventListener("keydown", function (e) {
+                    //e.preventDefault();
+                    //debugger;
+                    //console.log(e.key, e.keyCode);
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        g.addNode(e);
+                        g.graphItemTarget.value = "";
+                    }
+                });
+            },
+
+            bindButtons: function () {
+                g.addGraphItemButton.addEventListener("click", g.addNode);
+
+
+                g.newButton.addEventListener("click", function (e) {
+                    g.new();
+                });
+
+                g.saveButton.addEventListener("click", function (e) {
+                    g.save();
+                });
+            },
+
+            bindGraph: function () {
+                g.cy.on('click', 'node', function (evt) {
+                    let node = evt.target;
+
+                    g.graphItemId.value = node.id();
+                    g.graphItemSource.value = "";
+                    g.graphItemTarget.value = "";
+
+                    //console.log('node tapped ' + node.id());
+
+                });
+
+                g.cy.on('click', 'edge', function (evt) {
+                    let edge = evt.target;
+
+                    g.graphItemId.value = edge.id();
+                    g.graphItemSource.value = edge.source().id();
+                    g.graphItemTarget.value = edge.target().id();
+
+
+                });
+            },
+
+            // business function
+
+            addNode: function (e) {
+
+                let id = g.graphItemId.value.trim();
+                let src = g.graphItemSource.value.trim();
+                let dst = g.graphItemTarget.value.trim();
+
+                if ((id.length <= 0) && ((src.length <= 0) && (dst.length <= 0)))
+                    return;
+
+                //if ((id.length > 0) && ((src.length <= 0) && (dst.length <= 0))) {
+                //    // Has id but no source and no target => We are defining a node
+                //}
+
+
+                if ((src.length > 0) && (dst.length > 0)) {
+
+                    // Has source and target => We are defining an edge
+                    if (id.length > 0) {
+                        // We are defining an edge with Id
+                        let elementList = g.cy.$('#' + id);
+                        if (elementList.length <= 0) {
+                            g.cy.add({
+                                data: {
+                                    id: id,
+                                    source: src,
+                                    target: dst
+                                }
+                            });
+                        } else {
+                            // "Update" -- Which is a remove followed by an add
+                            g.cy.remove("#" + id);
+                            g.cy.add({
+                                data: {
+                                    id: id,
+                                    source: src,
+                                    target: dst
+                                }
+                            });
+                        }
+
+
+                    } else {
+                        // We are defining an edge with no Id
+                        g.cy.add({
+                            data: {
+                                source: src,
+                                target: dst
+                            }
+                        });
+                    }
+                } else {
+                    if ((id.length > 0)) {
+                        // We are defining a node
+                        let elementList = g.cy.$('#' + id);
+                        if (elementList.length <= 0) {
+                            g.cy.add({ data: { id: id } });
+                        }
+
+
+                    }
+                    // Else we do not have data to define any graph item (don't know is node or edge)
+                }
+
+                g.cy.layout({
+                    name: 'circle'
+                }).run();
+            },
+
+            new: function () {
+                console.debug("new : function () {");
+
+                // Initialize a new docId for document
+                g.docId = "cytoscape-" + g.uuid4();
+                g.docIdElement.value = g.uuid4();
+
+
+                // Clear title and editor contents
+                g.titleTextElement.value = "";
+                g.cy.elements().remove();
+
+
+                //editor.statusElement.innerText = "Unsaved";
+                //editor.docDateElement.innerText = "Not applicable";
+
+                //editor.titleElement.value = "";
+                //editor.quill.setText("");
+
+                console.log("New document [" + g.docId + "]");
+
+            },
+
+            save: function () {
+
+                console.log(g.cy.elements().jsons());
+
+                console.log("Items in localstorage (before):", localStorage.length);
+
+                let title = g.titleTextElement.value;
+
+                let content = g.cy.elements().jsons();
+
+                let savedDate = new Date;
+
+                localStorage.setItem(g.docId, JSON.stringify({
+                    "title": title,
+                    "content": content,
+                    "date": savedDate,
+                    "type": "cytoscape"
+                }));
+
+                console.debug("Items in localstorage (after):", localStorage.length);
+
+                g.listRecent();
+
+            },
+
+            load: function (docId) {
+
+                console.debug("load : function () {");
+
+                console.log("Loading document [" + docId + "]");
+
+                let doc = JSON.parse(localStorage.getItem(docId));
+
+                g.docId = docId;
+                g.docIdElement.value = docId;
+
+                // Clear
+                g.cy.elements().remove();
+
+                // Restore UI
+                g.titleTextElement.value = doc.title;
+
+                g.cy.add(doc.content);
+                g.cy.layout({
+                    name: 'circle'
+                }).run();
+
+
+                //editor.docId = docId;
+                //editor.docIdElement.value = docId;
+                //editor.titleElement.value = doc.title;
+                //editor.quill.setContents(doc.content);
+
+                //editor.statusElement.innerText = "Loaded";
+                //editor.docDateElement.innerText = doc.date;
+
+                console.log("Document [" + docId + "] loaded.")
+
+
+            },
+
+            listRecent: function () {
+                let idx = 0,
+                    recentList = [];
+
+                let ol = document.getElementById("recentList");
+
+                for (idx = 0; idx < localStorage.length; idx = idx + 1) {
+
+                    let storageKey = localStorage.key(idx);
+
+                    let doc = JSON.parse(localStorage.getItem(storageKey));
+
+                    doc.docId = storageKey;
+
+                    if (storageKey.startsWith("cytoscape")) {
+                        recentList.push(doc);
+                    }
+
+                }
+
+                recentList.sort(function (a, b) {
+
+                    let dateA = new Date(a.date);
+                    let dateB = new Date(b.date);
+
+                    // Sorts descending; to sort dates ascending order, reverse the signs
+                    if (dateA > dateB) return -1;
+                    if (dateA < dateB) return 1;
+                    if (dateA == dateB) return 0;
+                });
+
+                // Render recentList
+                //
+                // <li data-docId="xxxxx" class="recent-item">file1</li>
+                while (ol.children.length > 0) {
+                    ol.lastElementChild.remove();
+                }
+
+                for (idx = 0; idx < recentList.length; idx = idx + 1) {
+                    let doc = recentList[idx];
+
+                    let recentItem = document.createElement("li");
+                    recentItem.setAttribute("class", "recent-item");
+                    recentItem.setAttribute("data-docId", doc.docId);
+                    recentItem.addEventListener("click", function (e) {
+                        console.debug("element=[recentItem]&event=[click]")
+                        let docId = e.target.dataset["docid"];
+                        g.load(docId);
+                    });
+
+                    // Define contents of recent item
+                    let newContent = document.createTextNode(doc.title);
+
+                    // Add contents to recent itemm
+                    recentItem.appendChild(newContent);
+
+                    // Add item to recent item list
+                    ol.append(recentItem);
+                }
+            },
+
+            // common functions
+
+            uuid4: function () {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            },
+
+            // demo functions
+
+            demo: function () {
+
+                g.cy.add({ data: { id: 'a' } });
+                g.cy.add({ data: { id: 'b' } });
+
+                for (var i = 0; i < 10; i++) {
+                    g.cy.add({
+                        data: { id: 'node' + i }
+                    }
+                    );
+                    var source = 'node' + i;
+                    g.cy.add({
+                        data: {
+                            id: 'edge' + i,
+                            source: source,
+                            target: (i % 2 == 0 ? 'a' : 'b')
+                        }
+                    });
+                }
+                g.cy.layout({
+                    name: 'circle'
+                }).run();
+            }
+        };
+
+        (function ($) {
+            $(document).ready(function () {
+                g.init();
+                //g.demo();
+                g.listRecent();
+
+
+            });
+        }(jQuery));
+
+
+                                        ////////////////////////////////////////
+                                        // Obsolete code
+
+                                        //var cy = cytoscape({
+
+                                        //    container: document.getElementById('cy'), // container to render in
+
+                                        //    elements: [ // list of graph elements to start with
+                                        //        // Nodes
+                                        //          { data: { id: 'tfs' } }
+                                        //        //, { data: { id: 'refund' } }
+                                        //        //, { data: { id: 'event feed' } }
+                                        //        //, { data: { id: 'CDC' } }
+                                        //        //, { data: { id: 'Transaction' } }
+                                        //        , { data: { id: 'a' } }
+                                        //        , { data: { id: 'b' } }
+
+                                        //        // Edges
+                                        //        //, { data: { source: 'CDC', target: 'Transaction' } }
+                                        //        //, { data: { source: 'event feed', target: 'CDC' } }
+                                        //    ],
+
+                                        //    style: [ // the stylesheet for the graph
+                                        //        {
+                                        //            selector: 'node',
+                                        //            style: {
+                                        //                'background-color': '#666',
+                                        //                'label': 'data(id)'
+                                        //            }
+                                        //        },
+
+                                        //        {
+                                        //            selector: 'edge',
+                                        //            style: {
+                                        //                'width': 3,
+                                        //                'line-color': '#ccc',
+                                        //                'target-arrow-color': '#ccc',
+                                        //                'target-arrow-shape': 'triangle',
+                                        //                'curve-style': 'bezier'
+                                        //            }
+                                        //        }
+                                        //    ],
+
+                                        //    layout: {
+                                        //        name: 'grid',
+                                        //        rows: 1
+                                        //    }
+
+                                        //});
+
+
+
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
