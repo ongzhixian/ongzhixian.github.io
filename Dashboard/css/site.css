@@ -1,74 +1,24 @@
 
+/*
+    Use 
+      Lora        for headings (wt: 400,500,700)
+      Montserrat  for text
+    font-family: 'Lora', serif;               
+    font-family: 'Montserrat', sans-serif;
+*/
 
 
 h1,h2,h3,h4,h5,h6 {
-    /* 400,700*/
-    font-family: 'Quattrocento Sans', sans-serif;
-    
+    font-family: 'Lora', serif;
 }
 
 body {
-    font-family: 'Quattrocento', serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 
-.icon-button {
-    border: none;
-    background: none;
+.brand-text {
+  font-weight: bold;
+  font-size: 1.67em;
+  font-family: 'Lora', serif;
 }
-
-
-html.full,
-body.full,
-html.studio,
-body.studio,
-div.studio {
-    height: 100%;
-    overflow-y: hidden;
-}
-
-.recent-item {
-    cursor: pointer;
-}
-
-.recent-item:hover {
-    color: #333;
-    background-color: #998883;
-}
-
-.full-width {
-  width:100%;
-}
-
-
-/* CSS Animations */
-.shake {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-    animation-iteration-count: infinite;
-}
-
-.shake.stop {
-    animation-iteration-count: 0;
-}
-  
-@keyframes shake {
-
-    10%, 90% {
-      transform: translate3d(-1px, 0, 0);
-    }
-    
-    20%, 80% {
-      transform: translate3d(2px, 0, 0);
-    }
-  
-    30%, 50%, 70% {
-      transform: translate3d(-4px, 0, 0);
-    }
-  
-    40%, 60% {
-      transform: translate3d(4px, 0, 0);
-    }
-  }
