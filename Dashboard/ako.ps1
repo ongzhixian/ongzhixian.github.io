@@ -3,6 +3,9 @@ Add-Type -Path 'C:\src\github.io\lib\MongoDB\MongoDB.Driver.dll'
 Add-Type -Path 'C:\src\github.io\lib\MongoDB\MongoDB.Bson.dll'
 Add-Type -Path 'C:\src\github.io\lib\MongoDB\MongoDB.Libmongocrypt.dll'
 
+Add-Type -Path '/Users/zhixian/src/github.com/ongzhixian/github.io/lib/MongoDB/MongoDB.Driver.dll'
+Add-Type -Path '/Users/zhixian/src/github.com/ongzhixian/github.io/lib/MongoDB/MongoDB.Bson.dll'
+Add-Type -Path '/Users/zhixian/src/github.com/ongzhixian/github.io/lib/MongoDB/MongoDB.Libmongocrypt.dll'
 
 # MongoDB.Driver.MongoClient client = new MongoDB.Driver.MongoClient();
 
@@ -17,12 +20,22 @@ $a = $gMethod.Invoke($db, @("Books", $null))
 
 [MongoDB.Driver.IMongoCollection[MongoDB.Bson.BsonDocument]]$b = $gMethod.Invoke($db, @("Books", $null))
 
-
 $a.Count("{}", $null, [System.Threading.CancellationToken]::None)
 
 void InsertOne(MongoDB.Bson.BsonDocument document, MongoDB.Driver.InsertOneOptions options, System.Threading.CancellationToken cancellationToken)
 
-[MongoDB.Bson.BsonDocument] $d = 
+[MongoDB.Bson.BsonDocument] $doc = @{
+    "_id"= [MongoDB.Bson.ObjectId]::GenerateNewId();
+    "FirstName"= "Yves";
+    "LastName"= "Germain";
+    "PhoneNumbers"= [MongoDB.Bson.BsonDocument] @{
+        'Home'= '555-555-1212';
+        'Mobile'= '555-555-1212';
+    };
+};
+
+
+
 $a.InsertOne($doc, $null, [System.Threading.CancellationToken]::None)
 
 
@@ -37,9 +50,25 @@ $a.InsertOne($doc, $null, [System.Threading.CancellationToken]::None)
 $db.CreateCollection("Items", $null, [System.Threading.CancellationToken]::None)
 
 
+
+
+
 #####################
 
 # Not working
+
+
+$t = [System.Collections.Generic.Dictionary`2].MakeGenericType([string], [object]) 
+$o = [Activator]::CreateInstance($t)
+$o.Add("author", "zhixian")
+$d = [MongoDB.Bson.BsonDocument]::new($o)
+
+
+
+$q = [System.Collections.Generic.Dictionary[string,object]]::new()
+$q.Add("", "a")
+$d = [MongoDB.Bson.BsonDocument]::new($q)
+
 
 # MongoDB.Driver.IMongoCollection<MongoDB.Bson.BsonDocument> a;
 
@@ -50,7 +79,7 @@ $db.CreateCollection("Items", $null, [System.Threading.CancellationToken]::None)
 
 $db.CreateCollection("Items")
 
-$db.GetCollection[MongoDB.Bson.BsonDocument]("Books")
+#$db.GetCollection[MongoDB.Bson.BsonDocument]("Books")
 
 void IMongoDatabase.CreateCollection(string name, MongoDB.Driver.CreateCollectionOptions options,
 System.Threading.CancellationToken cancellationToken)
