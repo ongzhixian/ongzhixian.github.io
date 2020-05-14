@@ -1,10 +1,10 @@
+# This is the clean-up version of functions for working [System.Collections.Hashtable] objects
 # Some generic functions for working with System.Collections.Hashtable object
 # Functions:
 # Get-HashtableEntry        : Get a hashtable entry
 # Add-HashtableEntry        :
 # Update-HashtableEntry     :
 # Remove-HashtableEntry     :
-
 
 # Sample data
 # $x = @{
