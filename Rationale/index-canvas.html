@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>sim 1</title>
+  <meta name="description" content="Simulation 1" />
+  <meta name="author" content="Ong Zhi Xian" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway:400,300,600" />
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="/css/normalize.css" />
+  <link rel="stylesheet" href="/css/skeleton.css" />
+  <link rel="stylesheet" href="/css/site.css" />
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+
+</head>
+
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <canvas width="750" height="400" id="main_display"> </canvas>
+
+  <div class="container">
+    <div class="row">
+      <div class="one-half column" style="margin-top: 25%">
+        <h4>Basic Page</h4>
+        <p>This index.html page is a placeholder with the CSS, font and favicon. It's just waiting for you to add some
+          content! If you need some help hit up the <a href="http://www.getskeleton.com">Skeleton documentation</a>.</p>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <script type="text/javascript" src="js/site.js"></script>
+  <script type="text/javascript">
+    "use strict";
+
+    const g = {
+      // 
+      canvas: null,
+      context: null,
+      // variables to track framerate
+      secondsPassed: null,
+      oldTimeStamp: null,
+      fps: null,
+
+      // Functions
+      init: function () {
+        g.canvas = document.getElementById('main_display');
+        g.context = this.canvas.getContext('2d');
+
+        // Start the first frame request
+        window.requestAnimationFrame(g.updateState);
+      },
+      updateState: function (timeStamp) {
+
+        // Calculate the number of seconds passed since the last frame
+        g.secondsPassed = (timeStamp - g.oldTimeStamp) / 1000;
+        g.oldTimeStamp = timeStamp;
+
+        // Calculate fps
+        g.fps = Math.round(1 / g.secondsPassed);
+
+        // Draw number to the screen
+        g.context.fillStyle = 'white';
+        g.context.fillRect(0, 0, 200, 100);
+        g.context.font = '25px Arial';
+        g.context.fillStyle = 'black';
+        g.context.fillText("FPS: " + g.fps, 10, 30);
+
+        g.draw();
+
+        // Keep requesting new frames
+        window.requestAnimationFrame(g.updateState);
+      },
+      draw: function () {
+        let randomColor = Math.random() > 0.5 ? '#ff8080' : '#0099b0';
+        g.context.fillStyle = randomColor;
+        g.context.fillRect(100, 50, 200, 175);
+      }
+    };
+
+
+
+
+
+    (function () {
+      "use strict";
+
+      g.init();
+
+      // const game = new Game();
+      // game.init();
+      // game.run();
+
+
+    }());
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+const utcDate1 = new Date(Date.UTC(96, 1, 2, 3, 4, 5));
+
+Date.UTC(1970, 1, 4)
+
+
+multiply the production by a random integer from 128 to 383, then divide by 256, rounding down. 
+So 11 becomes 5 to 16. Finally, multiply it by 8 to get 40 to 128.)
+
+
+15
+
+For an industry that has poor or no service 
+    (less than 60% of its cargo is transported): 33% chance of increase, 67% chance of decrease.
+
+For an industry that has good (greater than 60%) service: 67% chance of increase, 33% chance of decrease.
+
+
+
+Town growth can be accelerated by loading and unloading at least one item of cargo at up to five stations within town influence within a 50 day period. 
+It does not matter which cargos are loaded/unloaded.
+
+
+If town growth is not funded and the town needs water, food or whatever 
+(and has population>90 for subarctic, 
+population>60 for subtropic), 
+it does not grow at all. 
+If town growth is funded, these checks are ignored and the town always grows.
+
+Production of raw materials happens 8 or 9 times per month. 
+(It happens every 256 ticks. There are 74 ticks in a day, and 28 to 31 days in a month 
+
+
+---
+
+http://phrogz.net/js/classes/OOPinJS.html
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/statements/for...of
+https://wiki.openttd.org/Industries
+
+
+
+https://github.com/OpenTTD/OpenTTD/blob/97c0594cedcad866bbdea8a0f86406b5c38694a3/src/table/build_industry.h#L1198
+http://wiki.openttdcoop.org/User:Mfb/Towns
+https://wiki.openttd.org/?title=Game_mechanics&action=view#Town_growth
+
+https://stackoverflow.com/questions/7757337/defining-read-only-properties-in-javascript
+
+https://www.w3schools.com/html/html5_webworkers.asp
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
+
+---------

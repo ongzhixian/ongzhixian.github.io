@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>sim 1</title>
+  <meta name="description" content="Simulation 1" />
+  <meta name="author" content="Ong Zhi Xian" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway:400,300,600" />
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="/css/normalize.css" />
+  <link rel="stylesheet" href="/css/skeleton.css" />
+  <link rel="stylesheet" href="/css/site.css" />
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+
+</head>
+
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+
+    <div class="row">
+
+      <h4>Sim</h4>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ticks</td>
+            <td id="tickerText">0</td>
+          </tr>
+          <tr>
+            <td>Date</td>
+            <td id="vdateText">0</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div><!-- row -->
+
+    <div class="row" id="playbackConsole">
+      <button id="pauseButton">Pause</button>
+      <button id="playButton">Play</button>
+
+    </div><!-- row -->
+
+    <div class="row" id="industries">
+      <table id="companiesTable">
+        <thead>
+          <tr>
+            <th>Industry</th>
+            <th>Production</th>
+            <th>Unit</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">ffff</td>
+            <td class="int">10</td>
+            <td>tn</td>
+            <td>grain</td>
+          </tr>
+          <tr>
+            <td class="int">21</td>
+            <td>tn</td>
+            <td>live</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div><!-- row -->
+
+  </div><!-- container -->
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <script type="text/javascript" src="js/site.js"></script>
+  <script type="text/javascript">
+    "use strict";
+
+    function Product(produceType, initProduction) {
+      // Public interface
+      // Props:
+      //    Name            : string
+      //    LastProduction  : int
+      // Funcs:
+      //    Produce         : int
+      
+      // Public properties
+      this.Name = produceType;
+      this.LastProduction = initProduction;
+
+      this.Produce = function () {
+        //
+        debugger;
+        this.LastProduction = Math.round(
+          this.LastProduction + (this.LastProduction * 0.2)
+        );
+
+        return this.LastProduction;
+      }
+
+    }
+
+    function Company(name, industryType) {
+      // Public interface
+      // Props:
+      //    Name          : string
+      //    IndustryType  : string
+      //    Products      : array[of Products]
+      // Funcs:
+      //    CalcProduction  : dict{}
+
+      // Private variables
+      var c = {};
+
+      // Private functions
+      // N/A
+
+      // Public properties
+      this.Name = name;
+
+      this.IndustryType = industryType;
+
+      this.IsDataStale = true;
+      
+      this.Products = (function (t) {
+        let result = [];
+        switch (t.toUpperCase()) {
+          case "FARM":
+            result.push(new Product("grain", 10));
+            result.push(new Product("live", 24));
+            break;
+          default:
+            break;
+        }
+        return result;
+      }(industryType));
+      
+      // Public functions
+      this.CalculateProduction = function () {
+        let result = {};
+
+        for (let pt of this.Products) {
+          result[pt.name] = pt.Produce();
+        }
+
+        this.IsDataStale = false;
+
+        return result;
+      }
+
+      this.LastProduction = function() { 
+        let result = {};
+
+        for (let pt of this.Products) {
+          result[pt.Name] = pt.LastProduction;
+        }
+
+        return result;
+      }
+
+
+      // Obsolete
+      // this.GetProduceTypes = function () {
+      //   this.products.push(new Product("grain", 10));
+      //   this.products.push(new Product("live", 24));
+      //   // return ["grain", "live"];
+      // }
+      //this.products = this.GetProduceTypes();
+
+
+    }
+
+    const g = {
+      // 
+      canvas: null,
+      context: null,
+
+      // variables to track framerate
+      secondsPassed: null,
+      oldTimeStamp: null,
+      fps: null,
+
+      // 
+      tick: 0,
+      tickInterval: null,
+      vdate: null,
+
+      // DOM varibles
+      tickerText: null,
+      dateText: null,
+      pauseButton: null,
+      playButton: null,
+      companiesTable: null,
+
+      companyList: null,
+
+      // Functions
+      init: function () {
+
+        g.tickerText = document.getElementById("tickerText");
+        g.vdateText = document.getElementById("vdateText");
+
+        g.companiesTable = document.getElementById("companiesTable");
+
+        g.pauseButton = document.getElementById("pauseButton");
+        g.playButton = document.getElementById("playButton");
+
+        // Initialize starting vdate
+        g.vdate = new Date(); // Start from Jan 1st 1970
+        g.vdate.setUTCFullYear(1970, 0, 1);
+        g.vdate.setUTCHours(0, 0, 0, 0);
+
+        // 
+        g.pauseButton.addEventListener("click", function (e) {
+          g.pauseSim();
+        });
+        g.playButton.addEventListener("click", function (e) {
+          g.runSim();
+        });
+
+        g.companyList = [];
+        g.companyList.push(new Company("ffff", "farm"));
+        g.companyList.push(new Company("xxxx", "farm"));
+
+        // Start the first frame request
+        //window.requestAnimationFrame(g.updateState);
+      },
+      // sim functions
+      pauseSim: function () {
+        clearInterval(g.tickInterval);
+      },
+      runSim: function () {
+        g.tickInterval = setInterval(g.update, 30);
+      },
+
+      updateState: function (timeStamp) {
+
+        // Keep requesting new frames
+        //window.requestAnimationFrame(g.updateState);
+
+        g.render();
+
+      },
+      update: function () {
+
+        g.tick = g.tick + 1;
+
+        // 72 ticks make a day
+        if ((g.tick % 72) === 0) {
+          g.vdate.setDate(g.vdate.getDate() + 1);
+        }
+
+        // Update companies data every 256 ticks
+        if ((g.tick % 256) === 0) {
+          debugger;
+          for (let cpy of g.companyList) {
+            cpy.CalculateProduction();
+          }
+        }
+        
+
+        g.render();
+      },
+      render: function () {
+        g.tickerText.innerText = g.tick;
+        g.vdateText.innerText = g.vdate.toUTCString().substring(4, 16);
+
+        g.renderCompanyProduction();
+
+
+
+        // Update 
+        //g.vdateText.innerText = g.vdate.toUTCString();
+        // let randomColor = Math.random() > 0.5 ? '#ff8080' : '#0099b0';
+        // g.context.fillStyle = randomColor;
+        // g.context.fillRect(100, 50, 200, 175);
+      },
+      renderCompanyProduction : function() {
+        // Display companies stats
+        // Clear body
+
+        
+
+        // Rather than looping each row and removing them one-by-one, remove tbody and recreate it
+        // g.companiesTable.tBodies[0].remove(); // 
+
+        let tbody = document.createElement('tbody');
+        for (let cpy of g.companyList) {
+          // Get production data for company
+          let production = cpy.LastProduction();
+
+          let row = tbody.insertRow();
+          let cell = row.insertCell();
+          let nodeText = document.createTextNode(cpy.Name);
+          cell.appendChild(nodeText);
+          cell.rowSpan = cpy.Products.length;
+
+          // Production cell
+          for (let pti = 0; pti < cpy.Products.length; pti = pti + 1) {
+            let pt = cpy.Products[pti];
+
+            if (pti !== 0) {
+              row = tbody.insertRow();
+            }
+
+            cell = row.insertCell();
+            cell.appendChild(document.createTextNode(production[pt.Name]));
+            cell.setAttribute("class", "int");
+
+            cell = row.insertCell();
+            cell.appendChild(document.createTextNode("tnn"));
+            cell = row.insertCell();
+            cell.appendChild(document.createTextNode(pt.Name));
+
+          }
+        }
+        g.companiesTable.tBodies[0].parentNode.replaceChild(tbody, g.companiesTable.tBodies[0]);
+
+        //g.companiesTable.tBodies[0]
+        // for (let i = 0; i < g.companyList.length; i = i + 1) {
+        //   let c = companyList[i];
+        // }
+      }
+
+    };
+
+
+
+
+
+    (function () {
+      "use strict";
+
+      g.init();
+
+      // const game = new Game();
+      // game.init();
+      // game.run();
+
+
+    }());
+  </script>
+</body>
+
+</html>
