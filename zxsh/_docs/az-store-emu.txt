@@ -1,0 +1,27 @@
+C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator>AzureStorageEmulator.exe start
+Windows Azure Storage Emulator 5.10.0.0 command line tool
+Autodetect requested. Autodetecting SQL Instance to use.
+Looking for a LocalDB Installation.
+Probing SQL Instance: '(localdb)\MSSQLLocalDB'.
+Found a LocalDB Installation.
+Probing SQL Instance: '(localdb)\MSSQLLocalDB'.
+Found SQL Instance (localdb)\MSSQLLocalDB.
+Creating database AzureStorageEmulatorDb510 on SQL instance '(localdb)\MSSQLLocalDB'.
+
+Granting database access to user GLOBALREFUND\zong.
+Database access for user GLOBALREFUND\zong was granted.
+
+Initialization successful. The storage emulator is now ready for use.
+The storage emulator was successfully started.
+
+C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator>cmd /K AzureStorageEmulator.exe help
+Windows Azure Storage Emulator 5.10.0.0 command line tool
+Usage:
+    AzureStorageEmulator.exe init            : Initialize the emulator database and configuration.
+    AzureStorageEmulator.exe start           : Start the emulator.
+    AzureStorageEmulator.exe stop            : Stop the emulator.
+    AzureStorageEmulator.exe status          : Get current emulator status.
+    AzureStorageEmulator.exe clear           : Delete all data in the emulator.
+    AzureStorageEmulator.exe help [command]  : Show general or command-specific help.
+
+See the following URL for more command line help: http://go.microsoft.com/fwlink/?LinkId=392235

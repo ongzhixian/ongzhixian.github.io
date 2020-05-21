@@ -1,0 +1,53 @@
+
+
+Install-Package Microsoft.Graph
+dotnet add package Microsoft.Graph
+
+
+# Graph API steps
+
+1.  Register your application   (https://aka.ms/appregistrations)
+2.  Authenticate for the Microsoft Graph service
+3.  Create a Microsoft Graph client object with an authentication provider
+4.  Make requests to the graph
+
+
+DevSecret
+m5p_0~P8~wv3717zlLm.Hj90CArtyN~V-Q
+
+
+#
+
+https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-netcore-daemon
+https://docs.microsoft.com/en-us/azure/active-directory/develop/
+https://github.com/AzureAD/microsoft-authentication-library-for-dotnet
+
+
+
+MS To Do App
+
+We’ll offer a preview version of our new API that supports work, school, and personal Microsoft accounts, 
+but note that we will only support delegated access in the first release. 
+
+The required permission scopes are 
+
+    Tasks.Read
+    , Tasks.ReadWrite and 
+    Tasks.ReadWrite.Shared
+    
+You’ll find support for the following endpoints:
+
+CRUD operation on TaskList entity	        /me/todo/lists
+CRUD operation on Task entity	            /me/todo/lists/<listId>/tasks
+CRUD operation on LinkedResource entity	    /me/todo/lists/<listId>/tasks/<taskId>/linkedResources
+
+
+
+# Links
+https://developer.microsoft.com/en-us/graph
+https://developer.microsoft.com/en-us/graph/graph-explorer
+https://github.com/microsoftgraph/msgraph-sdk-dotnet
+
+Not recommended? reference only
+https://docs.microsoft.com/en-us/previous-versions/office/office-365-api/api/version-2.0/task-rest-operations
+https://docs.microsoft.com/en-us/previous-versions/office/office-365-api/api/discovery-service-rest-operations
