@@ -1,0 +1,5 @@
+# PowerShellGet -- required(? really?) for Azure PowerShell
+Install-Module -Name PowerShellGet -Force
+
+# Azure PowerShell
+Install-Module -Name Az -AllowClobber
