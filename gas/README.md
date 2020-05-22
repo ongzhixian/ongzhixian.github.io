@@ -60,4 +60,10 @@ clasp deployments
     that lets you develop and manage Apps Script projects from your terminal rather than the Apps Script editor.
 
     https://developers.google.com/apps-script/guides/clasp
+    https://github.com/google/clasp/
 
+
+    https://developers.google.com/apps-script/guides/services#basic_javascript_features
+
+# Rhino
+    https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino/Download_Rhino
