@@ -43,12 +43,15 @@ CREATE TABLE "todo" (
 );
 
 
+
 CREATE TABLE "tag" (
-    "id"	    INTEGER,
-    "text"	    TEXT NOT NULL,
-    "assoc_id"  INTEGER,
-    PRIMARY KEY("id")
+	"id"	INTEGER,
+	"text"	TEXT NOT NULL,
+	"norm"	TEXT NOT NULL UNIQUE,
+	"assoc_id"	INTEGER,
+	PRIMARY KEY("id")
 );
+
 
 CREATE TABLE "domain" (
     "id"	INTEGER,
@@ -73,6 +76,11 @@ CREATE TABLE "topic_tag" (
 	PRIMARY KEY("topic_id", "tag_id")
 )
 
+CREATE TABLE "tag_assoc" (
+	"tag_id"	INTEGER,
+    "assoc_tag_id"	INTEGER,
+	PRIMARY KEY("tag_id", "assoc_tag_id")
+)
 
 -- Data proc queries
 
