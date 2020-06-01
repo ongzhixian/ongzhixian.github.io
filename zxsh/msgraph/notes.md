@@ -159,3 +159,7 @@ ASX                       11/28/2019 3:46:25 PM
 Sgx                       11/28/2019 3:46:25 PM
 Google keep               11/28/2019 3:46:22 PM
 Microsoft todos           11/28/2019 3:46:22 PM
+
+
+https://developer.yahoo.com/oauth2/guide/yahoo_scopes/
+Facebook?

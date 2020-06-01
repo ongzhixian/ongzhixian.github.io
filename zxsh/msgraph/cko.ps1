@@ -37,7 +37,7 @@ $a
 
 
 $a = Invoke-RestMethod -Headers $headers -Uri "https://graph.microsoft.com/beta/me/outlook/tasks?select=subject,createdDateTime&orderby=createdDateTime%20desc&count=true"
-$a = Invoke-RestMethod -Headers $headers -Uri "https://graph.microsoft.com/beta/me/outlook/tasks?select=subject%2ccreatedDateTime&orderby=createdDateTime+desc&count=true&$skip=10"
+$a = Invoke-RestMethod -Headers $headers -Uri "https://graph.microsoft.com/beta/me/outlook/tasks?select=subject%2ccreatedDateTime&orderby=createdDateTime+desc&count=true&$skip=30"
 
 $a = Invoke-RestMethod -Headers $headers -Uri $a."@odata.nextLink"
 
