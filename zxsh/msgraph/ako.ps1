@@ -2,8 +2,13 @@
 # Demo "auth-code grant" https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
 
 [string]$client_id = "d877ef27-a110-4e0f-82dd-e6c8e5385c62" # Application (client) ID
-[string]$tenant_id = "17370574-7110-40c3-a317-12ac3ebf9e96" # Directory (tenant) ID
+#[string]$tenant_id = "17370574-7110-40c3-a317-12ac3ebf9e96" # Directory (tenant) ID
+
+[string]$tenant_id = "common" #  Directory (tenant) ID; IMPORTANT! Use common to use the Microsoft publicly allowed
+
+
 $base_url = "https://login.microsoftonline.com"
+$scope="openid offline_access User.Read User.ReadWrite Tasks.ReadWrite Tasks.Read Group.Read.All Group.ReadWrite.All https://graph.microsoft.com/mail.read"
 
 
 # Get auth code
@@ -12,7 +17,7 @@ $c = @{
     response_type="code";
     redirect_uri="https://login.microsoftonline.com/common/oauth2/nativeclient";
     client_id=$client_id;
-    scope="openid offline_access User.Read User.ReadWrite tasks.read https://graph.microsoft.com/mail.read";
+    scope=$scope;
     response_mode="query";
     state="12345";
 }
@@ -71,7 +76,7 @@ $body = @{
     redirect_uri="https://login.microsoftonline.com/common/oauth2/nativeclient"
     grant_type="authorization_code";
     code=$code;
-    scope="openid offline_access https://graph.microsoft.com/mail.read";
+    scope=$scope;
 }
 
 # $body

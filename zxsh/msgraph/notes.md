@@ -107,3 +107,55 @@ https://login.microsoftonline.com/common/oauth2/v2.0/token
 Graph (corresponding for MS Graph)
 https://login.microsoftonline.com /$tenant_id/oauth2/v2.0/authorize
 https://login.microsoftonline.com /$tenant_id/oauth2/v2.0/token"
+
+
+https://www.c-sharpcorner.com/blogs/manage-outlook-tasks-using-microsoft-graph
+
+
+Careful
+https://oauthplay.azurewebsites.net/?code=M657b8bab-e543-f849-134c-0a2f85179a67&state=17661047-2a14-4c90-9edd-0119f841b559
+
+
+https://docs.microsoft.com/en-us/graph/permissions-reference#microsoft-accounts-and-work-or-school-accounts
+
+https://docs.microsoft.com/en-us/graph/api/outlooktaskfolder-list-tasks?view=graph-rest-beta&tabs=http
+
+
+OData (https://docs.microsoft.com/en-us/graph/query-parameters)
+On the beta endpoint, the $ prefix is optional. 
+For example, instead of $filter, you can use filter. 
+On the v1 endpoint, the $ prefix is optional for only a subset of APIs.
+For simplicity, always include $ if using the v1 endpoint.
+
+Examples:
+GET https://graph.microsoft.com/v1.0/users?$filter=startswith(givenName, 'J')   # Bad - not properly encoded
+GET https://graph.microsoft.com/v1.0/users?$filter=startswith(givenName%2C+'J') # Correct
+
+https://graph.microsoft.com/v1.0/me/contacts?$count=true
+
+https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-powershell-1.0/ee692794(v=technet.10)?redirectedfrom=MSDN
+
+
+$a =    @{Expression={$_.Name}              ; Label="Process Name"  ; width=25}, 
+        @{Expression={$_.ID}                ; Label="Process ID"    ; width=15}, 
+        @{Expression={$_.MainWindowTitle}   ; Label="Window Title"  ; width=40}
+
+$fmt = @{Expression={"{0:o}" -f $_.CreatedDateTime} ; Label="Created DateTime"  ; width=28}, @{Expression={$_.Subject} ; Label="Subject"  ; width=25}
+
+1234567890123456789012345678 -- 28 characters
+2019-11-28T15:46:55.5626237Z
+
+$a.value | Format-Table $fmt
+
+Subject                   Created DateTime
+-------                   ----------------
+Tensorflow                11/28/2019 3:46:55 PM
+Pandas                    11/28/2019 3:46:55 PM
+Flask                     11/28/2019 3:46:55 PM
+Ice                       11/28/2019 3:46:55 PM
+Django                    11/28/2019 3:46:55 PM
+Numpy                     11/28/2019 3:46:55 PM
+ASX                       11/28/2019 3:46:25 PM
+Sgx                       11/28/2019 3:46:25 PM
+Google keep               11/28/2019 3:46:22 PM
+Microsoft todos           11/28/2019 3:46:22 PM
