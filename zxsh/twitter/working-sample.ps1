@@ -148,117 +148,46 @@ function Get-AuthorizationHeader
 ########################################
 # Main script
 
-# $p = @{
-#     oauth_version="1.0";
-#     oauth_signature_method="HMAC-SHA1";
-#     oauth_consumer_key="xvz1evFS4wEEPTGEFPHBog";
-#     oauth_token="370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb";
-#     oauth_timestamp="1318622958";
-#     oauth_nonce="kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg";
-#     status="Hello Ladies + Gentlemen, a signed OAuth request!";
-#     include_entities="true";
-# }
-
-# $p = @{
-#     include_entities="true";
-#     oauth_consumer_key="xvz1evFS4wEEPTGEFPHBog";
-#     oauth_nonce="kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg";
-#     oauth_signature_method="HMAC-SHA1";
-#     status="Hello Ladies + Gentlemen, a signed OAuth request!";
-#     oauth_timestamp="1318622958";
-#     oauth_token="370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb";
-#     oauth_version="1.0";
-# }
-
-# [string]$prmString = Get-ParameterString $p
-
-# [string]$method = "Post"
-
-# [string]$url =  "https://api.twitter.com/1.1/statuses/update.json"
-
-# $sign_base = Get-SignatureBase $method $url $prmString
-
-# $comSec = "kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw"
-# $autSec = "LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE"
-
-# $sign_key = Get-SignatureKey $comSec $autSec
-
-# $b = Get-HMACSHA1 $sign_key $sign_base "BASE64"
-
-# $p.Add("oauth_signature", $b)
-
-# # Building authorization header
-
-# Get-AuthorizationHeader $p
-
-
-#####
-# Script to get request token
-# POST https://api.twitter.com/oauth/request_token
-
-# The basic
 $p = @{
     oauth_version="1.0";
     oauth_signature_method="HMAC-SHA1";
-    oauth_timestamp=Get-EpochTime;
-    oauth_nonce=Get-Nonce;
+    oauth_consumer_key="xvz1evFS4wEEPTGEFPHBog";
+    oauth_token="370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb";
+    oauth_timestamp="1318622958";
+    oauth_nonce="kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg";
+    status="Hello Ladies + Gentlemen, a signed OAuth request!";
+    include_entities="true";
 }
 
-# Fields needed for request token
-$p["oauth_consumer_key"] = "qqh5fmbjVeAqd0hSbUdrQBqRn"
-$p["oauth_callback"] = "oob"
+# $p = @{
+#     include_entities="true";
+#     oauth_consumer_key="xvz1evFS4wEEPTGEFPHBog";
+#     oauth_nonce="kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg";
+#     oauth_signature_method="HMAC-SHA1";
+#     status="Hello Ladies + Gentlemen, a signed OAuth request!";
+#     oauth_timestamp="1318622958";
+#     oauth_token="370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb";
+#     oauth_version="1.0";
+# }
 
 [string]$prmString = Get-ParameterString $p
-[string]$method = "Post"
-[string]$url =  "https://api.twitter.com/oauth/request_token"
 
-$comSec = "fWG6vhX7ksUQBPradcPSR4896wl7SqYvIztlDLUlo92iIwZX41"
+[string]$method = "Post"
+
+[string]$url =  "https://api.twitter.com/1.1/statuses/update.json"
 
 $sign_base = Get-SignatureBase $method $url $prmString
-$sign_key = Get-SignatureKey $comSec
 
-Write-Host "Sign-base"
-$sign_base
+$comSec = "kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw"
+$autSec = "LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE"
 
-Write-Host "Sign-key"
-$sign_key
+$sign_key = Get-SignatureKey $comSec $autSec
 
 $b = Get-HMACSHA1 $sign_key $sign_base "BASE64"
-$b
+
 $p.Add("oauth_signature", $b)
 
-$p
 
-$oauthHeaders = Get-AuthorizationHeader $p
-$oauthHeaders
+# Building authorization header
 
-# oauth_consumer_key="xvz1evFS4wEEPTGEFPHBog";
-# oauth_token="370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb";
-
-$headers = @{
-    Authorization=$oauthHeaders
-}
-
-$a = Invoke-RestMethod -Method Post -Headers $headers -Uri $url
-Write-Host "RESULT"
-$a
-# Should get a result like the below:
-# oauth_token=IP8nXAAAAAABEuP0AAABcnO2BPA&oauth_token_secret=JUiv464eEO90X8LjnCCvcjUAnoLjNSZ0&oauth_callback_confirmed=true
-
-
-# OK, time to get auth token based on request token
-
-$request_oauth_token = "IP8nXAAAAAABEuP0AAABcnO2BPA"
-$url = "https://api.twitter.com/oauth/authorize?oauth_token=$request_oauth_token"
-
-# MANUAL: Open $url in browser to let user login and authorize app to access account
-# At the end of the day should get a pin number (for example: 8837427)
-
-
-# Finally convert auth-token or pin into a access token
-
-$pin = "8837427"
-$url = "https://api.twitter.com/oauth/access_token?oauth_token=$request_oauth_token&oauth_verifier=$pin"
-
-# Should get a result like:
-# oauth_token=11217332-1iOkuTXb0oSZeEG0DROPGlaK1XzbvtgZvGNYeqFJQ&oauth_token_secret=1nJYq8kTBeK67jw5kX27YYWDZPdgAXU3GbEDfTUO7Xc2q&user_id=11217332&screen_name=zhixian
+Get-AuthorizationHeader $p

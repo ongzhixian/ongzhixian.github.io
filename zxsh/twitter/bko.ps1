@@ -204,18 +204,20 @@ $p = @{
     oauth_nonce=Get-Nonce;
 }
 
-# Fields needed for request token
+# Fields needed for POST statuses/updat
 $p["oauth_consumer_key"] = "qqh5fmbjVeAqd0hSbUdrQBqRn"
-$p["oauth_callback"] = "oob"
+$p["oauth_token"] = "11217332-1iOkuTXb0oSZeEG0DROPGlaK1XzbvtgZvGNYeqFJQ" # from access token 
+$p["status"] = "My first API post"
 
 [string]$prmString = Get-ParameterString $p
 [string]$method = "Post"
-[string]$url =  "https://api.twitter.com/oauth/request_token"
+[string]$url =  "https://api.twitter.com/1.1/statuses/update.json"
 
 $comSec = "fWG6vhX7ksUQBPradcPSR4896wl7SqYvIztlDLUlo92iIwZX41"
+$autSec = "1nJYq8kTBeK67jw5kX27YYWDZPdgAXU3GbEDfTUO7Xc2q" # from access token 
 
 $sign_base = Get-SignatureBase $method $url $prmString
-$sign_key = Get-SignatureKey $comSec
+$sign_key = Get-SignatureKey $comSec $autSec
 
 Write-Host "Sign-base"
 $sign_base
@@ -239,26 +241,50 @@ $headers = @{
     Authorization=$oauthHeaders
 }
 
-$a = Invoke-RestMethod -Method Post -Headers $headers -Uri $url
+$body = @{
+    status="My first API post"
+}
+
+$a = Invoke-RestMethod -Method Post -Headers $headers -Uri $url -Body $body
 Write-Host "RESULT"
 $a
-# Should get a result like the below:
-# oauth_token=IP8nXAAAAAABEuP0AAABcnO2BPA&oauth_token_secret=JUiv464eEO90X8LjnCCvcjUAnoLjNSZ0&oauth_callback_confirmed=true
 
 
-# OK, time to get auth token based on request token
-
-$request_oauth_token = "IP8nXAAAAAABEuP0AAABcnO2BPA"
-$url = "https://api.twitter.com/oauth/authorize?oauth_token=$request_oauth_token"
-
-# MANUAL: Open $url in browser to let user login and authorize app to access account
-# At the end of the day should get a pin number (for example: 8837427)
-
-
-# Finally convert auth-token or pin into a access token
-
-$pin = "8837427"
-$url = "https://api.twitter.com/oauth/access_token?oauth_token=$request_oauth_token&oauth_verifier=$pin"
-
-# Should get a result like:
-# oauth_token=11217332-1iOkuTXb0oSZeEG0DROPGlaK1XzbvtgZvGNYeqFJQ&oauth_token_secret=1nJYq8kTBeK67jw5kX27YYWDZPdgAXU3GbEDfTUO7Xc2q&user_id=11217332&screen_name=zhixian
+# created_at                : Tue Jun 02 06:49:08 +0000 2020
+# id                        : 1267709819143634945
+# id_str                    : 1267709819143634945
+# text                      : My first API post
+# truncated                 : False
+# entities                  : @{hashtags=System.Object[]; symbols=System.Object[]; user_mentions=System.Object[];
+#                             urls=System.Object[]}
+# source                    : <a href="https://localhost.localhost" rel="nofollow">zxsh-twitter</a>
+# in_reply_to_status_id     :
+# in_reply_to_status_id_str :
+# in_reply_to_user_id       :
+# in_reply_to_user_id_str   :
+# in_reply_to_screen_name   :
+# user                      : @{id=11217332; id_str=11217332; name=zhixian; screen_name=zhixian; location=Singapore;
+#                             description=Average Singapore software engineer; url=; entities=; protected=False;
+#                             followers_count=11; friends_count=99; listed_count=0; created_at=Sun Dec 16 08:32:02 +0000
+#                             2007; favourites_count=28; utc_offset=; time_zone=; geo_enabled=True; verified=False;
+#                             statuses_count=90; lang=; contributors_enabled=False; is_translator=False;
+#                             is_translation_enabled=False; profile_background_color=C0DEED;
+#                             profile_background_image_url=http://abs.twimg.com/images/themes/theme1/bg.png;
+#                             profile_background_image_url_https=https://abs.twimg.com/images/themes/theme1/bg.png;
+#                             profile_background_tile=False; profile_image_url=http://pbs.twimg.com/profile_images/876597
+#                             051215167488/4uxpMJg7_normal.jpg; profile_image_url_https=https://pbs.twimg.com/profile_ima
+#                             ges/876597051215167488/4uxpMJg7_normal.jpg; profile_link_color=1DA1F2;
+#                             profile_sidebar_border_color=C0DEED; profile_sidebar_fill_color=DDEEF6;
+#                             profile_text_color=333333; profile_use_background_image=True; has_extended_profile=True;
+#                             default_profile=True; default_profile_image=False; following=False;
+#                             follow_request_sent=False; notifications=False; translator_type=none}
+# geo                       :
+# coordinates               :
+# place                     :
+# contributors              :
+# is_quote_status           : False
+# retweet_count             : 0
+# favorite_count            : 0
+# favorited                 : False
+# retweeted                 : False
+# lang                      : en
