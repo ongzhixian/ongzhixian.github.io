@@ -1,0 +1,1 @@
+class Demo : System.Management.Automation.Provider.CmdletProvider {}
