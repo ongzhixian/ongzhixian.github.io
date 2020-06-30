@@ -289,3 +289,11 @@ __pycache__/
 
 **/res
 **/_backup
+*.lnk
+*.db
+*.sqlite3
+
+# Gradle
+**/.project
+**/.settings/org.eclipse.buildship.core.prefs
+**/.classpath
