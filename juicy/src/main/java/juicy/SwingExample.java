@@ -5,9 +5,14 @@ import javax.swing.*;
 import javax.swing.plaf.metal.*;
 import java.awt.event.*;
 
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.BevelBorder;
+
 public class SwingExample implements ActionListener {
 
-    public JMenuBar createMenuBar() {
+    private JMenuBar createMenuBar() {
         JMenuBar menuBar;
         JMenu menu, submenu;
         JMenuItem menuItem;
@@ -17,7 +22,15 @@ public class SwingExample implements ActionListener {
         //Create the menu bar.
         menuBar = new JMenuBar();
 
-        //Build the first menu.
+        //Build the first menu.        
+        // menu = new JMenu("Another Menu");
+        // menu.setMnemonic(KeyEvent.VK_N);
+        // menu.getAccessibleContext().setAccessibleDescription(
+        //         "This menu does nothing");
+        menuBar.add(GetOptionsMenu());
+
+        
+        //Build second menu in the menu bar.
         menu = new JMenu("File");
         menu.setMnemonic(KeyEvent.VK_F);
         menu.getAccessibleContext().setAccessibleDescription("File menu");
@@ -81,34 +94,30 @@ public class SwingExample implements ActionListener {
         submenu.add(menuItem);
         menu.add(submenu);
 
-        //Build second menu in the menu bar.
-        // menu = new JMenu("Another Menu");
-        // menu.setMnemonic(KeyEvent.VK_N);
-        // menu.getAccessibleContext().setAccessibleDescription(
-        //         "This menu does nothing");
-        menuBar.add(GetOptionsMenu());
+
 
         return menuBar;
     }
 
     private JMenu GetOptionsMenu() {
-        JMenu menu = new JMenu("Options");
-        menu.setMnemonic(KeyEvent.VK_O);
-        menu.getAccessibleContext().setAccessibleDescription("Options menu");
+        JMenu menu = new JMenu("Application");
+        menu.setMnemonic(KeyEvent.VK_A);
+        menu.getAccessibleContext().setAccessibleDescription("Application menu");
 
         JMenuItem exitMenuItem = new JMenuItem("Exit", KeyEvent.VK_T);
-        exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
         exitMenuItem.getAccessibleContext().setAccessibleDescription("Exit application");
         menu.add(exitMenuItem);
 
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //jMenuItem1ActionPerformed(evt);
+        exitMenuItem.addActionListener(new ExitAction());
+        // exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        //     public void actionPerformed(java.awt.event.ActionEvent evt) {
+        //         //jMenuItem1ActionPerformed(evt);
 
-                javax.swing.JOptionPane.showMessageDialog(null, "foo");
-                System.exit(0);
-            }
-        });
+        //         javax.swing.JOptionPane.showMessageDialog(null, "foo");
+        //         System.exit(0);
+        //     }
+        // });
 
         return menu;
     }
@@ -123,7 +132,7 @@ public class SwingExample implements ActionListener {
         JScrollPane scrollPane;
         
         output = new JTextArea(5, 30);
-        output.setEditable(false);
+        output.setEditable(true);
         scrollPane = new JScrollPane(output);
 
         //Add the text area to the content pane.
@@ -140,21 +149,62 @@ public class SwingExample implements ActionListener {
         //Make sure we have nice window decorations.
         JFrame.setDefaultLookAndFeelDecorated(true);
         
-        final JFrame f = new JFrame("hello world");// creating instance of JFrame
+        final JFrame f = new JFrame("Sample app");  // creating instance of JFrame
+        f.setSize(400, 500);                        // 400 width, 500 height
+        f.setLayout(new BorderLayout());            // using BorderLayout
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        final JButton b = new JButton("click");// creating instance of JButton
-        b.setBounds(130, 100, 100, 40);// x axis, y axis, width, height
-        b.addActionListener(this);
+        f.setJMenuBar(this.createMenuBar());
 
-        f.add(b);// adding button in JFrame
+        // Add some content
+
+        JLabel yellowLabel = new JLabel();
+        yellowLabel.setOpaque(true);
+        yellowLabel.setBackground(new Color(248, 213, 131));
+        yellowLabel.setPreferredSize(new Dimension(200, 180));
+        f.getContentPane().add(createContentPane(), BorderLayout.CENTER);
+
 
         
-        f.setJMenuBar(this.createMenuBar());
-        f.setContentPane(createContentPane());
+        JLabel statusLabel = new JLabel();
+        statusLabel.setOpaque(true);
+        statusLabel.setBackground(new Color(100, 213, 131));
+        statusLabel.setText("gummy");
+        yellowLabel.setPreferredSize(new Dimension(200, 180));
+        f.getContentPane().add(statusLabel, BorderLayout.SOUTH);
 
-        f.setSize(400, 500);// 400 width and 500 height
-        f.setLayout(null);// using no layout managers
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // final JButton b = new JButton("click");// creating instance of JButton
+        // b.setBounds(130, 100, 100, 40);// x axis, y axis, width, height
+        // b.addActionListener(this);
+
+        // f.add(b);// adding button in JFrame
+
+        
+        
+
+        // JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        // statusBar.setBorder(new CompoundBorder(new LineBorder(Color.DARK_GRAY), new EmptyBorder(4, 4, 4, 4)));
+        // final JLabel status = new JLabel();
+        // status.setText("Gummy");
+        // statusBar.add(status);
+        // f.add(statusBar, BorderLayout.SOUTH);
+
+        // JPanel statusPanel = new JPanel();
+        // statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        // f.add(statusPanel, BorderLayout.SOUTH);
+        // statusPanel.setPreferredSize(new Dimension(f.getWidth(), 16));
+        // statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+        // JLabel statusLabel = new JLabel("status");
+        // statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        // statusPanel.add(statusLabel);
+
+        // f.setContentPane(createContentPane());
+        // // f.getContentPane().add(statusPanel);
+        
+
+        
+        f.pack();
         f.setVisible(true);// making the frame visible
 
         // JFrame frame = new JFrame("JFrame Example");
