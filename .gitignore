@@ -297,3 +297,7 @@ __pycache__/
 **/.project
 **/.settings/org.eclipse.buildship.core.prefs
 **/.classpath
+
+# Ignore certain project folders
+/edam/
+/gd/
