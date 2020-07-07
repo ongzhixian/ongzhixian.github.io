@@ -1,0 +1,9 @@
+{
+    "application": {
+        "name"              : "hci (public web)",
+        "version"           : "0.0.1",
+        "version_date"      : "2020-07-07",
+        "auth_cookie_name"  : "auth_hci_public_web",
+        "page_size"         : "25"
+    }
+}
