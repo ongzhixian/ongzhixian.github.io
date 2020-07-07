@@ -37,7 +37,6 @@
   <div class="container">
 
     <div class="row">
-
       <h4>Sim</h4>
 
       <table>
@@ -103,6 +102,29 @@
   <script type="text/javascript">
     "use strict";
 
+    // Function to load a script file dynamically
+    function loadScript(url, fn) {
+
+      var scriptTag = document.createElement("script");
+      scriptTag.type = "text/javascript";
+      scriptTag.src = url;
+
+      if (scriptTag.readyState) { // IE
+        scriptTag.onreadystatechange = function() {
+            if (scriptTag.readyState == "loaded" || scriptTag.readyState == "complete") {
+              scriptTag.onreadystatechange = null;
+              fn();
+            }
+          };
+      } else {  //Others
+        scriptTag.onload = function() {
+            fn();
+          };
+      }
+
+      head.appendChild(scriptTag);
+    }
+
     function Product(produceType, initProduction) {
       // Public interface
       // Props:
@@ -124,7 +146,6 @@
 
         return this.LastProduction;
       }
-
     }
 
     function Company(name, industryType) {
@@ -279,7 +300,6 @@
 
         // Update companies data every 256 ticks
         if ((g.tick % 256) === 0) {
-          debugger;
           for (let cpy of g.companyList) {
             cpy.CalculateProduction();
           }
