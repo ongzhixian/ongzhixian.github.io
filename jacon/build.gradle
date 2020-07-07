@@ -17,12 +17,15 @@ plugins {
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
+    // https://mvnrepository.com/repos/jcenter
     jcenter()
 }
 
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
+    implementation 'com.android.volley:volley:1.1.1'
+    // https://alvinalexander.com/java/java-apache-httpclient-restful-client-examples/
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13'
