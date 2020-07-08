@@ -16,6 +16,8 @@ def tea_batch(request):
     """
     request_json = request.get_json(silent=True)
     # request_args = request.args
+    if request_json is None:
+        return "is None"
 
     # if request_json and 'msg' in request_json:
         # msg = request_json['msg']
@@ -32,7 +34,7 @@ def tea_batch(request):
         return "no data"
         # is < 1 or == 1
     
-    if request_json is None:
-        return "is None"
-    else:
-        return str(len(request_json))
+    # if request_json is None:
+        # return "is None"
+    # else:
+        # return str(len(request_json))
