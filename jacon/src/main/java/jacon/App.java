@@ -10,5 +10,12 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
+
+        // CryptoTest test = new CryptoTest();
+        // test.DoWork();
+
+        ApiHelper apiHelper = new ApiHelper();
+        apiHelper.DoWork();
+
     }
 }
