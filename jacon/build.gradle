@@ -25,7 +25,11 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
     implementation 'com.android.volley:volley:1.1.1'
+    
     // https://alvinalexander.com/java/java-apache-httpclient-restful-client-examples/
+
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13'

@@ -9,6 +9,9 @@ import java.net.HttpURLConnection;
 // import java.net.MalformedURLException;
 // import java.net.ProtocolException;
 import java.net.URL;
+import org.json.simple.JSONObject;
+
+
 
 public class ApiHelper {
 
@@ -43,6 +46,13 @@ public class ApiHelper {
         "    \"msg\" : \"workding post to httpurlconnection\"" +
         "}";
         
+        // creating JSONObject 
+        JSONObject jo = new JSONObject(); 
+          
+        // putting data to JSONObject 
+        jo.put("msg", "using simple json object");
+
+
         // "{\n" + "\"userId\": 101,\r\n" +
         //     "    \"id\": 101,\r\n" +
         //     "    \"title\": \"Test Title\",\r\n" +
@@ -56,7 +66,8 @@ public class ApiHelper {
         postConnection.setRequestProperty("Content-Type", "application/json");
         postConnection.setDoOutput(true);
         OutputStream os = postConnection.getOutputStream();
-        os.write(POST_PARAMS.getBytes());
+        //os.write(POST_PARAMS.getBytes());
+        os.write(jo.toJSONString().getBytes());
         os.flush();
         os.close();
         int responseCode = postConnection.getResponseCode();
