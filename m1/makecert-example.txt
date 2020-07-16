@@ -1,0 +1,21 @@
+makecert -r -pe -n "CN=CompanyXYZ Server" -b 01/01/2007 -e 01/01/2010 -sky exchange Server.cer -sv Server.pvk
+pvk2pfx.exe -pvk Server.pvk -spc Server.cer -pfx Server.pfx
+
+
+Breakdown
+
+makecert -r -pe -n "CN=CompanyXYZ Server" -b 01/01/2007 -e 01/01/2010 -sky exchange Server.cer -sv Server.pvk
+
+-r				-- Create a self signed certificate
+-pe 				-- Mark generated private key as exportable
+-n "CN=CompanyXYZ Server" 	-- Certificate subject X500 name (eg: CN=Fred Dews)
+-b 01/01/2007 			-- Start of the validity period; default to now. 
+-e 01/01/2010 			-- End of validity period; defaults to 2039
+-sky exchange Server.cer 	-- Subject key type {signature|exchange|<integer>}
+-sv Server.pvk			-- Subject's PVK file; To be created if not present
+
+makecert -r -pe -n "CN=CompanyXYZ Server" -b 01/01/2007 -e 01/01/2010 -sky exchange Server.cer -sv Server.pvk
+
+makecert -r -pe -n "CN=localhost" -sky exchange certificate.cer -sv certificate.pvk
+
+pvk2pfx.exe -pvk certificate.pvk -spc certificate.cer -pfx certificate.pfx
