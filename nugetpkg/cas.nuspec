@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>Globalblue.Jupiter.ResharperSettings</id>
+        <version>0.0.14</version>
+        <title>CasTeamR#Settings</title>
+        <authors>Globalblue CAS Team</authors>
+        <owners>Globalblue CAS Team</owners>
+        <projectUrl>https://dev.global-blue.com/stash/projects/CAS</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Globalblue CAS Team ReSharper Settings and live templates as plugin</description>
+        <copyright>Copyright © Globalblue 2020</copyright>
+        <dependencies>
+            <dependency id="Wave" version="[201.0.0]" />
+        </dependencies>
+        <releaseNotes></releaseNotes>
+        <language>en-US</language>
+        <tags>settings</tags>
+        <packageTypes>
+            <packageType name="Template" />
+        </packageTypes>
+    </metadata>
+  <files>
+    <file src=".\Settings\" target="DotFiles\Extensions\Globalblue.Jupiter.ResharperSettings\settings\" />
+  </files>
+</package>
