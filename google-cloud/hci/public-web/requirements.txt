@@ -3,6 +3,6 @@
 Flask==1.1.1
 google-cloud-datastore==1.9.0
 google-auth==1.6.3
-requests==2.22.0
+requests==2.31.0
 #pymongo==3.9.0
 # pycryptodome 
